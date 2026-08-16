@@ -64,7 +64,7 @@
 
             <div class="col-md-4">
                 <div class="card" style="width:400px">
-                    <img class="card-img-top" src="../Zapatilla_1.png" alt="Card image" style="width:100%">
+                    <img class="card-img-top" src="Zapatilla_1.png" alt="Card image" style="width:100%">
                     <div class="card-body">
                         <h4 class="card-title">Jordan Son of Mars Low</h4>
                         <p class="card-text">El Jordan Son of Mars Low juega con estilo en un diseño que rinde homenaje a la combinación de Mike, Spike y la legendaria campaña publicitaria que los unió. La combinación de cuero auténtico y sintético brinda comodidad y durabilidad, mientras que los detalles clásicos de Jordan lo convierten en una leyenda.</p>
@@ -75,7 +75,7 @@
 
             <div class="col-md-4">
                 <div class="card" style="width:400px">
-                    <img class="card-img-top" src="../Zapatilla_2.png" alt="Card image" style="width:100%">
+                    <img class="card-img-top" src="Zapatilla_2.png" alt="Card image" style="width:100%">
                     <div class="card-body">
                         <h4 class="card-title">Nike Air Max 90 Premium</h4>
                         <p class="card-text">El Air Max 90 se mantiene fiel a sus raíces de running con la icónica suela Waffle, mientras que las superposiciones cosidas y los detalles texturizados crean el look de los 90 que tanto te gusta. Con colores fáciles de combinar, su amortiguación visible agrega comodidad a cada paso.</p>
@@ -86,7 +86,7 @@
 
             <div class="col-md-4">
                 <div class="card" style="width:400px">
-                    <img class="card-img-top" src="../Zapatilla_3.png" alt="Card image" style="width:100%">
+                    <img class="card-img-top" src="Zapatilla_3.png" alt="Card image" style="width:100%" ">
                     <div class="card-body">
                         <h4 class="card-title">Nike Revolution 8</h4>
                         <p class="card-text">Los Revolution 8 son la evolución de tu modelo favorito. La entresuela de espuma y el antepié flexible ofrecen amortiguación, lo que brinda suavidad en cada pisada. Además, la capellada de malla es aún más transpirable que la versión anterior para que puedas correr con mayor frescura y comodidad.</p>
@@ -104,7 +104,7 @@
 
             <div class="col-md-4">
                 <div class="card">
-                    <img class="card-img-top" src="ruta_polera1.png" alt="Polera 1">
+                    <img class="card-img-top" src="Polera_1.png" alt="Polera 1" style="height:500px">
                     <div class="card-body">
                         <h4 class="card-title">Polera 1</h4>
                         <p class="card-text">Descripción de la polera 1.</p>
@@ -115,7 +115,7 @@
         
             <div class="col-md-4">
                 <div class="card">
-                    <img class="card-img-top" src="ruta_polera2.png" alt="Polera 2">
+                    <img class="card-img-top" src="Polera_2.png" alt="Polera 2" style="height:500px">
                     <div class="card-body">
                         <h4 class="card-title">Polera 2</h4>
                         <p class="card-text">Descripción de la polera 2.</p>
@@ -126,7 +126,7 @@
 
             <div class="col-md-4">
                 <div class="card">
-                    <img class="card-img-top" src="ruta_polera3.png" alt="Polera 3">
+                    <img class="card-img-top" src="Polera_3.png" alt="Polera 3" style="height:500px">
                     <div class="card-body">
                         <h4 class="card-title">Polera 3</h4>
                         <p class="card-text">Descripción de la polera 3.</p>
