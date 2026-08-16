@@ -12,12 +12,10 @@
 
   <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <nav class="navbar navbar-expand-sm bg-light navbar-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="index.php">Logo
-          <!-- O colocar una imagen en lugar de texto 
-          <img src="..." alt="" width="30" height="24" class="d-inline-block align-text-top"> 
-          -->
+        <a class="navbar-brand" href="index.php"><!-- Texto en lugar de imagen -->
+          <img src="Logo-Nike.png" alt="" width="40" height="24" class="d-inline-block align-text-top"> 
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
           <span class="navbar-toggler-icon"></span>
