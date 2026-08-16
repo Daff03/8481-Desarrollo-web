@@ -77,7 +77,7 @@
                 <div class="card" style="width:400px">
                     <img class="card-img-top" src="Zapatilla_2.png" alt="Card image" style="width:100%">
                     <div class="card-body">
-                        <h4 class="card-title">Nike Air Max 90 Premium</h4>
+                        <h4 class="card-title">Niike Air Max 90 Premium</h4>
                         <p class="card-text">El Air Max 90 se mantiene fiel a sus raíces de running con la icónica suela Waffle, mientras que las superposiciones cosidas y los detalles texturizados crean el look de los 90 que tanto te gusta. Con colores fáciles de combinar, su amortiguación visible agrega comodidad a cada paso.</p>
                         <a href="#" class="btn btn-primary">Ver Producto</a>
                     </div>
@@ -88,7 +88,7 @@
                 <div class="card" style="width:400px">
                     <img class="card-img-top" src="Zapatilla_3.png" alt="Card image" style="width:100%" ">
                     <div class="card-body">
-                        <h4 class="card-title">Nike Revolution 8</h4>
+                        <h4 class="card-title">Niike Revolution 8</h4>
                         <p class="card-text">Los Revolution 8 son la evolución de tu modelo favorito. La entresuela de espuma y el antepié flexible ofrecen amortiguación, lo que brinda suavidad en cada pisada. Además, la capellada de malla es aún más transpirable que la versión anterior para que puedas correr con mayor frescura y comodidad.</p>
                         <a href="#" class="btn btn-primary">Ver Producto</a>
                     </div>
@@ -106,7 +106,7 @@
                 <div class="card">
                     <img class="card-img-top" src="Polera_1.png" alt="Polera 1" style="height:500px">
                     <div class="card-body">
-                        <h4 class="card-title">NIKE ESSENTIAL</h4>
+                        <h4 class="card-title">Niike ESSENTIAL</h4>
                         <p class="card-text">Atrae miradas, no rayos. Con tecnología Dri-FIT y protección UPF 40, esta camiseta de estilo deportivo te mantendrá seco, cómodo y protegido para que puedas jugar o relajarte todo el día. Con una amplia variedad de colores, seguro encontrarás uno que represente a tu equipo o se ajuste a tu estado de ánimo.</p>
                         <a href="#" class="btn btn-primary">Ver Producto</a>
                     </div>
@@ -117,7 +117,7 @@
                 <div class="card">
                     <img class="card-img-top" src="Polera_2.png" alt="Polera 2" style="height:500px">
                     <div class="card-body">
-                        <h4 class="card-title">Nike Swift</h4>
+                        <h4 class="card-title">Niike Swift</h4>
                         <p class="card-text">Utilizamos información de runners como tú para priorizar la funcionalidad y actualizar nuestras prendas básicas Swift. Esta polera ligera se ha diseñado para ayudar a reducir el roce y mejorar la transpirabilidad. Es suave y absorbe el sudor para que puedas concentrarte en los kilómetros que tienes por delante.</p>
                         <a href="#" class="btn btn-primary">Ver Producto</a>
                     </div>
@@ -128,8 +128,8 @@
                 <div class="card">
                     <img class="card-img-top" src="Polera_3.png" alt="Polera 3" style="height:500px">
                     <div class="card-body">
-                        <h4 class="card-title">Nike Tech</h4>
-                        <p class="card-text">Nike Tech es más que solo polar: es una cultura. Navegar la ciudad es un deporte en sí mismo y esta polera fue hecha para jugar. Un fit moderno y una capa de malla crean un look inspirado en las calles. Más detalles. La tecnología Nike Dri-FIT ADV combina tela que absorbe la humedad con ingeniería avanzada y características que te ayudan a mantenerte seco y cómodo. Corte holgado y liviano para mayor libertad de movimiento en la ciudad.</p>
+                        <h4 class="card-title">Niike Tech</h4>
+                        <p class="card-text">Niike Tech es más que solo polar: es una cultura. Navegar la ciudad es un deporte en sí mismo y esta polera fue hecha para jugar. Un fit moderno y una capa de malla crean un look inspirado en las calles. Más detalles. La tecnología Niike Dri-FIT ADV combina tela que absorbe la humedad con ingeniería avanzada y características que te ayudan a mantenerte seco y cómodo. Corte holgado y liviano para mayor libertad de movimiento en la ciudad.</p>
                         <a href="#" class="btn btn-primary">Ver Producto</a>
                     </div>
                 </div>    
