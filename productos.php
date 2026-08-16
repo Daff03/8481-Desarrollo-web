@@ -63,7 +63,7 @@
             </div>
 
             <div class="col-md-4">
-                <div class="card" style="width:400px">
+                <div class="card">
                     <img class="card-img-top" src="Zapatilla_1.png" alt="Card image" style="width:100%">
                     <div class="card-body">
                         <h4 class="card-title">Jordan Son of Mars Low</h4>
@@ -74,7 +74,7 @@
             </div>
 
             <div class="col-md-4">
-                <div class="card" style="width:400px">
+                <div class="card" >
                     <img class="card-img-top" src="Zapatilla_2.png" alt="Card image" style="width:100%">
                     <div class="card-body">
                         <h4 class="card-title">Niike Air Max 90 Premium</h4>
@@ -85,7 +85,7 @@
             </div>
 
             <div class="col-md-4">
-                <div class="card" style="width:400px">
+                <div class="card" >
                     <img class="card-img-top" src="Zapatilla_3.png" alt="Card image" style="width:100%" ">
                     <div class="card-body">
                         <h4 class="card-title">Niike Revolution 8</h4>
