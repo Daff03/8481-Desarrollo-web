@@ -129,7 +129,7 @@
                     <img class="card-img-top" src="Polera_3.png" alt="Polera 3">
                     <div class="card-body">
                         <h4 class="card-title">Polera 3</h4>
-                        <p class="card-text">Descripción de la polera 3.</p>
+                        <p class="card-text">Nike Tech es más que solo polar: es una cultura. Navegar la ciudad es un deporte en sí mismo y esta polera fue hecha para jugar. Un fit moderno y una capa de malla crean un look inspirado en las calles. Más detalles. La tecnología Nike Dri-FIT ADV combina tela que absorbe la humedad con ingeniería avanzada y características que te ayudan a mantenerte seco y cómodo. Corte holgado y liviano para mayor libertad de movimiento en la ciudad.</p>
                         <a href="#" class="btn btn-primary">Ver Producto</a>
                     </div>
                 </div>    
