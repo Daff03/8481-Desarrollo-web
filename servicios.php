@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Pagina Servicios
-      
-    </title>
+    <title>Servicios</title>
 
   </head>
 
@@ -17,7 +15,7 @@
     <nav class="navbar navbar-expand-sm bg-light navbar-light">
       <div class="container-fluid">
         <a class="navbar-brand" href="index.php"><!-- Texto en lugar de imagen -->
-          <img src="Logo-Nike.png" alt="" width="40" height="24" class="d-inline-block align-text-top"> 
+          <img src="Logo_NIIKE.PNG" alt="" width="40" height="24" class="d-inline-block align-text-top"> 
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
           <span class="navbar-toggler-icon"></span>
@@ -51,22 +49,58 @@
     </nav>
 
     <!-- Container -->
-    <div class="container-fluid">
-      Pagina Principal<br>
-      <a href="index.php">Ir a Principal</a><br>
-      <a href="empresa.php">Ir a Empresa</a><br>
-      <a href="contacto.php">Ir a Contacto</a><br>
-      <a href="servicios.php">Ir a Servicios</a><br>
-      <a href="productos.php">Ir a Productos</a><br>
-      <a href="politica.php">Ir a Politica de Privacidad</a><br>
+    <div class="container-fluid bg-light py-5">
+      <h1 class="display-4 fw-bold text-center">Nuestros Servicios</h1>
+      <p class="lead text-center">Ofrecemos una amplia gama de servicios para satisfacer tus necesidades</p>
+      <div class="row mt-5">
+        <div class="col-md-4 text-center">
+          <i class="fa fa-truck fa-3x mb-3"></i>
+          <h3>Envío Rápido</h3>
+          <p>Garantizamos un envío rápido y seguro para que recibas tus productos en el menor tiempo posible.</p>
+        </div>
+        <div class="col-md-4 text-center">
+          <i class="fa fa-refresh fa-3x mb-3"></i>
+          <h3>Devoluciones Fáciles</h3>
+          <p>Si no estás satisfecho con tu compra, ofrecemos un proceso de devolución sencillo y sin complicaciones.</p>
+        </div>
+        <div class="col-md-4 text-center">
+          <i class="fa fa-headphones fa-3x mb-3"></i>
+          <h3>Atención al Cliente</h3>
+          <p>Nuestro equipo de atención al cliente está disponible para ayudarte con cualquier consulta o problema que puedas tener.</p>
+        </div>
+      </div>
     </div>
 
     <!-- Footer -->
     <div class="container-fluid mt-5 bg-dark text-white ">
       <div class="row">
-        <div class="col-4"></div>
-        <div class="col-4 d-flex justify-content-center">Nombre de empresa</div>
-        <div class="col-4"></div>
+        <div class="col-6 col-sm-3 d-flex flex-column align-items-center text-center mb-1 ">
+          <img src="Logo_NIIKE.PNG" alt="" width="40" height="24" class="d-inline-block align-text-top"> 
+          <p class="mt-2 small">Ofrecemos zapatos y poleras de gran calidad para uso casual, amantes de la moda y deportistas</p>
+        </div>
+        <div class="col-6 col-sm-3  d-flex flex-column align-items-center text-center mb-1 ">
+          <h5>Enlaces</h5>
+          <ul class="list-unstyled">
+            <li><br><a href="empresa.php" class="text-white">Empresa</a></li>
+            <li><a href="contacto.php" class="text-white">Contacto</a></li>
+            <li><a href="servicios.php" class="text-white">Servicios</a></li>
+            <li><a href="productos.php" class="text-white">Productos</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-sm-3  d-flex flex-column align-items-center text-center mb-1 ">
+          <h5>Legal</h5>
+          <ul class="list-unstyled">
+            <li><br></li>
+            <li><a href="politica.php" class="text-white">Política de Privacidad</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-sm-3  d-flex flex-column align-items-center text-center mb-1 ">
+          <h5>Contacto</h5>
+          <ul class="list-unstyled">
+            <li><i class="fa fa-envelope"></i> info@niike.com</li>
+            <li><i class="fa fa-phone"></i> +1 234 567 890</li>
+          </ul>
+        </div>
       </div>
     </div>
 
