@@ -50,14 +50,102 @@
 
     <!-- Container -->
     <div class="container-fluid">
-      Pagina Principal<br>
-      <a href="index.php">Ir a Principal</a><br>
-      <a href="empresa.php">Ir a Empresa</a><br>
-      <a href="contacto.php">Ir a Contacto</a><br>
-      <a href="servicios.php">Ir a Servicios</a><br>
-      <a href="productos.php">Ir a Productos</a><br>
-      <a href="politica.php">Ir a Politica de Privacidad</a><br>
+      <div class="row">
+        <div class="col-12">
+          <h1>Productos</h1>
+          <p>Esta es la página de productos.</p>
+        </div>
+
+        <!-- Fila de Zapatillas -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <h2>Zapatillas</h2>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card" style="width:400px">
+                    <img class="card-img-top" src="../Zapatilla_1.png" alt="Card image" style="width:100%">
+                    <div class="card-body">
+                        <h4 class="card-title">Jordan Son of Mars Low</h4>
+                        <p class="card-text">El Jordan Son of Mars Low juega con estilo en un diseño que rinde homenaje a la combinación de Mike, Spike y la legendaria campaña publicitaria que los unió. La combinación de cuero auténtico y sintético brinda comodidad y durabilidad, mientras que los detalles clásicos de Jordan lo convierten en una leyenda.</p>
+                        <a href="#" class="btn btn-primary">Ver Producto</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card" style="width:400px">
+                    <img class="card-img-top" src="../Zapatilla_2.png" alt="Card image" style="width:100%">
+                    <div class="card-body">
+                        <h4 class="card-title">Nike Air Max 90 Premium</h4>
+                        <p class="card-text">El Air Max 90 se mantiene fiel a sus raíces de running con la icónica suela Waffle, mientras que las superposiciones cosidas y los detalles texturizados crean el look de los 90 que tanto te gusta. Con colores fáciles de combinar, su amortiguación visible agrega comodidad a cada paso.</p>
+                        <a href="#" class="btn btn-primary">Ver Producto</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card" style="width:400px">
+                    <img class="card-img-top" src="../Zapatilla_3.png" alt="Card image" style="width:100%">
+                    <div class="card-body">
+                        <h4 class="card-title">Nike Revolution 8</h4>
+                        <p class="card-text">Los Revolution 8 son la evolución de tu modelo favorito. La entresuela de espuma y el antepié flexible ofrecen amortiguación, lo que brinda suavidad en cada pisada. Además, la capellada de malla es aún más transpirable que la versión anterior para que puedas correr con mayor frescura y comodidad.</p>
+                        <a href="#" class="btn btn-primary">Ver Producto</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fila de Poleras -->
+        <div class="row mt-4 mb-5">
+            <div class="col-12">
+                <h2>Poleras</h2>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <img class="card-img-top" src="ruta_polera1.png" alt="Polera 1">
+                    <div class="card-body">
+                        <h4 class="card-title">Polera 1</h4>
+                        <p class="card-text">Descripción de la polera 1.</p>
+                        <a href="#" class="btn btn-primary">Ver Producto</a>
+                    </div>
+                </div>    
+            </div>
+        
+            <div class="col-md-4">
+                <div class="card">
+                    <img class="card-img-top" src="ruta_polera2.png" alt="Polera 2">
+                    <div class="card-body">
+                        <h4 class="card-title">Polera 2</h4>
+                        <p class="card-text">Descripción de la polera 2.</p>
+                        <a href="#" class="btn btn-primary">Ver Producto</a>
+                    </div>
+                </div>    
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <img class="card-img-top" src="ruta_polera3.png" alt="Polera 3">
+                    <div class="card-body">
+                        <h4 class="card-title">Polera 3</h4>
+                        <p class="card-text">Descripción de la polera 3.</p>
+                        <a href="#" class="btn btn-primary">Ver Producto</a>
+                    </div>
+                </div>    
+            </div>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <div class="container-fluid mt-5 bg-dark text-white ">
+      <div class="row">
+        <div class="col-4"></div>
+            </div>
+        </div>
+    </div>
+</div> 
+
 
     <!-- Footer -->
     <div class="container-fluid mt-5 bg-dark text-white ">
@@ -101,7 +189,6 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar <i class="fa fa-remove "></i></button>
           </div>
-
         </div>
       </div>
     </div>
