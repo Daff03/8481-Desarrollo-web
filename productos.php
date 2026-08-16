@@ -104,10 +104,10 @@
 
             <div class="col-md-4">
                 <div class="card">
-                    <img class="card-img-top" src="ruta_polera1.png" alt="Polera 1">
+                    <img class="card-img-top" src="Polera_1.png" alt="Polera 1">
                     <div class="card-body">
-                        <h4 class="card-title">Polera 1</h4>
-                        <p class="card-text">Descripción de la polera 1.</p>
+                        <h4 class="card-title">NIKE ESSENTIAL</h4>
+                        <p class="card-text">Atrae miradas, no rayos. Con tecnología Dri-FIT y protección UPF 40, esta camiseta de estilo deportivo te mantendrá seco, cómodo y protegido para que puedas jugar o relajarte todo el día. Con una amplia variedad de colores, seguro encontrarás uno que represente a tu equipo o se ajuste a tu estado de ánimo.</p>
                         <a href="#" class="btn btn-primary">Ver Producto</a>
                     </div>
                 </div>    
@@ -115,10 +115,10 @@
         
             <div class="col-md-4">
                 <div class="card">
-                    <img class="card-img-top" src="ruta_polera2.png" alt="Polera 2">
+                    <img class="card-img-top" src="Polera_2.png" alt="Polera 2">
                     <div class="card-body">
-                        <h4 class="card-title">Polera 2</h4>
-                        <p class="card-text">Descripción de la polera 2.</p>
+                        <h4 class="card-title">Nike Swift</h4>
+                        <p class="card-text">Utilizamos información de runners como tú para priorizar la funcionalidad y actualizar nuestras prendas básicas Swift. Esta polera ligera se ha diseñado para ayudar a reducir el roce y mejorar la transpirabilidad. Es suave y absorbe el sudor para que puedas concentrarte en los kilómetros que tienes por delante.</p>
                         <a href="#" class="btn btn-primary">Ver Producto</a>
                     </div>
                 </div>    
@@ -126,7 +126,7 @@
 
             <div class="col-md-4">
                 <div class="card">
-                    <img class="card-img-top" src="ruta_polera3.png" alt="Polera 3">
+                    <img class="card-img-top" src="Polera_3.png" alt="Polera 3">
                     <div class="card-body">
                         <h4 class="card-title">Polera 3</h4>
                         <p class="card-text">Descripción de la polera 3.</p>
