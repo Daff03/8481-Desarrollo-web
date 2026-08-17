@@ -48,11 +48,44 @@
       </div>
     </nav>
 
+    
+
     <!-- Container -->
     <div class="container-fluid bg-dark text-white text-center py-5">
       <h1 class="display-4 fw-bold">Estilo y rendimiento en cada paso</h1>
       <p class="lead">Zapatos y poleras de gran calidad para moda y deporte</p>
       <a href="productos.php" class="btn btn-light btn-lg mt-3">Ver Productos</a>
+    </div>
+    <!-- Carousel -->
+    <div id="demo" class="carousel slide" data-bs-ride="carousel">
+
+      <!-- Indicators/dots -->
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+      </div>
+
+      <!-- The slideshow/carousel -->
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="imagen_1.png" alt="Air Jordan 1 Retro High OG" class="d-block mx-auto " style=" 100%; height: 500px;">
+        </div>
+          <div class="carousel-item">
+          <img src="imagen_2.png" alt="Jordan 1 Patent Bred" class="d-block mx-auto " style="100%; height: 500px;">
+        </div>
+        <div class="carousel-item">
+          <img src="imagen_3.png" alt="Niike Revolution 8" class="d-block mx-auto " style=" 100%; height: 500px;">
+        </div>
+      </div>
+
+      <!-- Left and right controls/icons -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
     </div>
 
     <div class="container my-5 text-center">
