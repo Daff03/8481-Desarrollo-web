@@ -119,7 +119,7 @@
           </div>
 
           <!-- Modal body -->
-          <form action="/action_page.php">
+          <form action="productos.php">
             <div class="m-3">
               <label for="email" class="form-label">ID de Usuario:</label>
               <input type="email" class="form-control" id="email" placeholder="" name="email">
