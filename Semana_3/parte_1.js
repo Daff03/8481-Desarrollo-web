@@ -1,8 +1,8 @@
 const btnLogin = document.querySelector('#inicioSesion button[type="submit"]');
 
 let texto = document.createElement("input");
-texto.setAttribute("type", "text");
-texto.setAttribute("value", "Confirma tu contraseña");
+texto.setAttribute("type", "password");
+texto.setAttribute("placeholder", "Confirma tu contraseña");
 texto.className = "form-control mb-2 mx-2"; 
 btnLogin.insertAdjacentElement("beforebegin", texto);
 
@@ -29,6 +29,13 @@ let responseAPI = {
 
 let cmbRegion = document.createElement("select");
 cmbRegion.setAttribute("name", "cmbRegion");
+
+let optionDefault = document.createElement("option");
+optionDefault.setAttribute("value", "");
+optionDefault.innerText = "Ingrese su región de estadía";
+optionDefault.setAttribute("disabled", "");
+optionDefault.setAttribute("selected", "");
+cmbRegion.appendChild(optionDefault);
 
 responseAPI.data.forEach((reg) => {
 let optionAux = document.createElement("option");
