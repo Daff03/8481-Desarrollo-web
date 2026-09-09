@@ -82,8 +82,9 @@ async function startServer() {
 }
 
 startServer();
+
 const app = express();
 app.use(cors());
-app.listen({ port: 8090, function() {
+app.listen(8090, function() {
     console.log(`Server ready at http://localhost:8090${apolloServer.graphqlPath}`);
-} });
+} );

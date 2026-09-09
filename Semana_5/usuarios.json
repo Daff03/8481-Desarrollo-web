@@ -1,0 +1,22 @@
+[
+  { "nombre": "Ana Torres", "gmail": "ana.torres@gmail.com", "pass": "clave123" },
+  { "nombre": "Carlos Muñoz", "gmail": "carlos.munoz@gmail.com", "pass": "clave123" },
+  { "nombre": "Beatriz Rojas", "gmail": "beatriz.rojas@gmail.com", "pass": "clave123" },
+  { "nombre": "Diego Fernández", "gmail": "diego.fernandez@gmail.com", "pass": "clave123" },
+  { "nombre": "Elena Castro", "gmail": "elena.castro@gmail.com", "pass": "clave123" },
+  { "nombre": "Felipe Soto", "gmail": "felipe.soto@gmail.com", "pass": "clave123" },
+  { "nombre": "Gabriela Reyes", "gmail": "gabriela.reyes@gmail.com", "pass": "clave123" },
+  { "nombre": "Héctor Vargas", "gmail": "hector.vargas@gmail.com", "pass": "clave123" },
+  { "nombre": "Isidora Morales", "gmail": "isidora.morales@gmail.com", "pass": "clave123" },
+  { "nombre": "Joaquín Espinoza", "gmail": "joaquin.espinoza@gmail.com", "pass": "clave123" },
+  { "nombre": "Karina Fuentes", "gmail": "karina.fuentes@gmail.com", "pass": "clave123" },
+  { "nombre": "Luis Herrera", "gmail": "luis.herrera@gmail.com", "pass": "clave123" },
+  { "nombre": "Marcela Silva", "gmail": "marcela.silva@gmail.com", "pass": "clave123" },
+  { "nombre": "Nicolás Pizarro", "gmail": "nicolas.pizarro@gmail.com", "pass": "clave123" },
+  { "nombre": "Olivia Contreras", "gmail": "olivia.contreras@gmail.com", "pass": "clave123" },
+  { "nombre": "Pablo Araya", "gmail": "pablo.araya@gmail.com", "pass": "clave123" },
+  { "nombre": "Renata Guzmán", "gmail": "renata.guzman@gmail.com", "pass": "clave123" },
+  { "nombre": "Sebastián Núñez", "gmail": "sebastian.nunez@gmail.com", "pass": "clave123" },
+  { "nombre": "Tamara Ibáñez", "gmail": "tamara.ibanez@gmail.com", "pass": "clave123" },
+  { "nombre": "Vicente Bravo", "gmail": "vicente.bravo@gmail.com", "pass": "clave123" }
+]
