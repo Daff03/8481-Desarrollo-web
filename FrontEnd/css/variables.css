@@ -1,0 +1,86 @@
+:root {
+  /* Colores */
+  --color-primario: #2C1A0E;        /* Fondo principal / marrón oscuro */
+  --color-secundario: #F5F0E8;      /* Fondo claro / beige */
+  --color-acento: #C9A84C;          /* Dorado principal */
+  --color-acento-oscuro: #A98732;   /* Dorado tostado (hover) */
+  --color-blanco: #FFFFFF;          /* Tarjetas */
+  --color-texto-principal: #212121; /* Texto sobre fondo claro */
+  --color-texto-oscuro: #F2EEE6;    /* Texto sobre fondo oscuro */
+  --color-texto-secundario: #8A8167;/* Texto auxiliar */
+
+  /* Tipografías */
+  --font-titulos: 'Playfair Display', serif;
+  --font-texto: 'Montserrat', sans-serif;
+
+  /* Espaciado / bordes (ajustar si se necesita) */
+  --radius-base: 8px;
+  --transition-base: 0.2s ease-in-out;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-texto);
+  color: var(--color-texto-principal);
+  background-color: var(--color-secundario);
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-titulos);
+}
+
+.btn-al-sahara-primario {
+  background-color: var(--color-acento);
+  color: var(--color-primario);
+  border: none;
+  border-radius: var(--radius-base);
+  font-weight: 600;
+  transition: background-color var(--transition-base);
+}
+.btn-al-sahara-primario:hover {
+  background-color: var(--color-acento-oscuro);
+  color: var(--color-blanco);
+}
+
+.btn-al-sahara-secundario {
+  background-color: transparent;
+  color: var(--color-primario);
+  border: 1px solid var(--color-acento);
+  border-radius: var(--radius-base);
+  font-weight: 600;
+}
+
+.btn-al-sahara-oscuro {
+  background-color: var(--color-primario);
+  color: var(--color-texto-oscuro);
+  border: none;
+  border-radius: var(--radius-base);
+  font-weight: 600;
+}
+
+.btn-al-sahara-primario:disabled,
+.btn-al-sahara-oscuro:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.input-al-sahara {
+  border: 1px solid var(--color-texto-secundario);
+  border-radius: var(--radius-base);
+  padding: 0.6rem 0.9rem;
+  font-family: var(--font-texto);
+}
+.input-al-sahara:focus {
+  outline: none;
+  border-color: var(--color-acento);
+  box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.25);
+}
+
+.footer-desc {
+  color: var(--color-texto-oscuro);
+  opacity: 0.75;
+}
