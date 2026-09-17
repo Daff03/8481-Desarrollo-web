@@ -1,5 +1,5 @@
 <section id="menu" class="al-sahara-menu">
-  <div class="container">
+  <div class="container px-4 px-lg-5">
 
     <div class="text-center mb-5 al-sahara-reveal">
       <span class="al-sahara-eyebrow d-block">— Nuestra Carta —</span>

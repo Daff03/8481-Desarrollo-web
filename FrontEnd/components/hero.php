@@ -1,6 +1,6 @@
 <section id="inicio" class="al-sahara-hero position-relative overflow-hidden">
-  <div class="container">
-    <div class="row align-items-center gy-5">
+  <div class="container px-4 px-lg-5">
+    <div class="row align-items-center gy-5 gx-lg-5">
 
       <div class="col-lg-6 position-relative al-sahara-reveal">
         <div class="al-sahara-hero-img d-flex flex-column align-items-center justify-content-center text-center p-4">
