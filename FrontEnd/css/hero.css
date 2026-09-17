@@ -1,0 +1,183 @@
+/* ---------- Hero ---------- */
+.al-sahara-hero {
+  padding: 130px 0 80px;
+  background-color: var(--color-secundario);
+}
+
+@media (min-width: 992px) {
+  .al-sahara-hero {
+    padding: 160px 0 100px;
+  }
+}
+
+.al-sahara-hero-img {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-base);
+  background:
+    linear-gradient(160deg, rgba(44, 26, 14, 0.92), rgba(44, 26, 14, 0.78)),
+    repeating-linear-gradient(45deg, rgba(201, 168, 76, 0.16) 0 2px, transparent 2px 22px);
+  box-shadow: 0 20px 45px -20px rgba(44, 26, 14, 0.35);
+}
+
+.al-sahara-hero-img-icon {
+  font-size: 42px;
+  margin-bottom: 12px;
+}
+
+.al-sahara-hero-img-text {
+  font-size: 0.8rem;
+  color: var(--color-texto-oscuro);
+  opacity: 0.8;
+  max-width: 220px;
+}
+
+.al-sahara-hero-img-path {
+  font-size: 0.7rem;
+  color: var(--color-acento);
+  font-family: monospace;
+  margin-top: 8px;
+}
+
+.al-sahara-hero-badge {
+  position: absolute;
+  bottom: -24px;
+  right: 8px;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background-color: var(--color-blanco);
+  box-shadow: 0 15px 35px -15px rgba(44, 26, 14, 0.4);
+}
+
+@media (min-width: 992px) {
+  .al-sahara-hero-badge {
+    right: -20px;
+    width: 130px;
+    height: 130px;
+  }
+}
+
+.al-sahara-hero-badge-number {
+  font-family: var(--font-titulos);
+  font-style: italic;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-acento-oscuro);
+  line-height: 1;
+}
+
+.al-sahara-hero-badge-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-texto-secundario);
+  line-height: 1.3;
+  margin-top: 2px;
+}
+
+.al-sahara-eyebrow {
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-acento-oscuro);
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+.al-sahara-hero-title {
+  font-family: var(--font-titulos);
+  font-weight: 700;
+  font-size: clamp(32px, 4.4vw, 52px);
+  line-height: 1.15;
+  color: var(--color-primario);
+  margin-bottom: 20px;
+}
+
+.al-sahara-hero-title em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--color-acento-oscuro);
+}
+
+.al-sahara-hero-subtitle {
+  font-size: 1.05rem;
+  color: var(--color-texto-principal);
+  max-width: 460px;
+  margin-bottom: 20px;
+}
+
+.al-sahara-hero-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-primario);
+  border-bottom: 1px solid var(--color-acento-oscuro);
+  padding-bottom: 3px;
+  margin-bottom: 40px;
+  text-decoration: none;
+  transition: color var(--transition-base);
+}
+
+.al-sahara-hero-link:hover {
+  color: var(--color-acento-oscuro);
+}
+
+.al-sahara-hero-link-arrow {
+  transition: transform var(--transition-base);
+}
+
+.al-sahara-hero-link:hover .al-sahara-hero-link-arrow {
+  transform: translateX(5px);
+}
+
+.al-sahara-feature-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: rgba(201, 168, 76, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+}
+
+.al-sahara-feature-text {
+  color: var(--color-texto-secundario);
+}
+
+/* ---------- Reveal on scroll ---------- */
+.al-sahara-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s cubic-bezier(.22,.68,0,1.01), transform 0.8s cubic-bezier(.22,.68,0,1.01);
+}
+.al-sahara-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.al-sahara-reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.al-sahara-reveal-stagger.is-visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+.al-sahara-reveal-stagger.is-visible > *:nth-child(1) { transition-delay: .05s; }
+.al-sahara-reveal-stagger.is-visible > *:nth-child(2) { transition-delay: .15s; }
+.al-sahara-reveal-stagger.is-visible > *:nth-child(3) { transition-delay: .25s; }
+.al-sahara-reveal-stagger.is-visible > *:nth-child(4) { transition-delay: .35s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .al-sahara-reveal,
+  .al-sahara-reveal-stagger > * {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}

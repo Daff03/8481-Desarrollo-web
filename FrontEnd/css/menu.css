@@ -1,0 +1,138 @@
+/* ---------- Menú del Restaurante ---------- */
+.al-sahara-menu {
+  padding: 90px 0 110px;
+  background-color: var(--color-secundario);
+}
+
+.al-sahara-menu-title {
+  font-family: var(--font-titulos);
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 42px);
+  color: var(--color-primario);
+}
+
+.al-sahara-menu-tabs {
+  border-bottom: 1px solid rgba(44, 26, 14, 0.1);
+  padding-bottom: 2px;
+}
+
+.al-sahara-tab-btn {
+  background: none;
+  border: none;
+  font-family: var(--font-texto);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-texto-secundario);
+  padding: 10px 16px;
+  position: relative;
+  transition: color var(--transition-base);
+}
+
+.al-sahara-tab-btn::after {
+  content: '';
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: -1px;
+  height: 2px;
+  background-color: var(--color-acento-oscuro);
+  transform: scaleX(0);
+  transition: transform var(--transition-base);
+}
+
+.al-sahara-tab-btn:hover {
+  color: var(--color-primario);
+}
+
+.al-sahara-tab-btn.active {
+  color: var(--color-primario);
+  font-weight: 600;
+}
+
+.al-sahara-tab-btn.active::after {
+  transform: scaleX(1);
+}
+
+.al-sahara-dish {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.al-sahara-dish.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .al-sahara-dish {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.al-sahara-dish-card {
+  background-color: var(--color-blanco);
+  border-radius: var(--radius-base);
+  overflow: hidden;
+  transition: box-shadow 0.35s ease, transform 0.35s ease;
+}
+
+.al-sahara-dish-card:hover {
+  box-shadow: 0 20px 45px -20px rgba(44, 26, 14, 0.3);
+  transform: translateY(-4px);
+}
+
+.al-sahara-dish-card:hover .al-sahara-dish-emoji {
+  transform: scale(1.15);
+}
+
+.al-sahara-dish-img {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    repeating-linear-gradient(135deg, rgba(201, 168, 76, 0.18) 0 2px, transparent 2px 20px),
+    var(--color-primario);
+}
+
+.al-sahara-dish-emoji {
+  font-size: 42px;
+  transition: transform 0.4s ease;
+}
+
+.al-sahara-dish-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: var(--color-acento);
+  color: var(--color-primario);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.al-sahara-dish-name {
+  font-family: var(--font-titulos);
+  font-size: 1.1rem;
+  color: var(--color-primario);
+  margin-bottom: 8px;
+}
+
+.al-sahara-dish-desc {
+  color: var(--color-texto-secundario);
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+.al-sahara-dish-price {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--color-acento-oscuro);
+}
