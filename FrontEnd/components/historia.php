@@ -33,9 +33,8 @@
       </div>
 
       <div class="col-lg-6 order-1 order-lg-2">
-        <!-- reemplazar por <img src="assets/img/historia.jpg" > -->
-        <div class="ratio ratio-4x3 bg-secondary bg-opacity-25 rounded d-flex align-items-center justify-content-center">
-          <span class="text-muted">Imagen histórica del local</span>
+        <div class="ratio ratio-4x3 rounded overflow-hidden">
+          <img src="assets/img/historia.jpg" alt="Familia de tres generaciones sentada a la mesa en el salón de Al Sahara" class="object-fit-cover" width="1200" height="900" loading="lazy">
         </div>
       </div>
 

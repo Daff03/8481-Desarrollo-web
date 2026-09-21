@@ -17,25 +17,15 @@
     linear-gradient(160deg, rgba(44, 26, 14, 0.92), rgba(44, 26, 14, 0.78)),
     repeating-linear-gradient(45deg, rgba(201, 168, 76, 0.16) 0 2px, transparent 2px 22px);
   box-shadow: 0 20px 45px -20px rgba(44, 26, 14, 0.35);
+  overflow: hidden;
 }
 
-.al-sahara-hero-img-icon {
-  font-size: 42px;
-  margin-bottom: 12px;
-}
-
-.al-sahara-hero-img-text {
-  font-size: 0.8rem;
-  color: var(--color-texto-oscuro);
-  opacity: 0.8;
-  max-width: 220px;
-}
-
-.al-sahara-hero-img-path {
-  font-size: 0.7rem;
-  color: var(--color-acento);
-  font-family: monospace;
-  margin-top: 8px;
+.al-sahara-hero-img img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% center;
 }
 
 .al-sahara-hero-badge {

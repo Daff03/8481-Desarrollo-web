@@ -88,8 +88,13 @@
   transform: scale(1.15);
 }
 
+.al-sahara-dish-card:hover .al-sahara-dish-photo {
+  transform: scale(1.06);
+}
+
 .al-sahara-dish-img {
   position: relative;
+  overflow: hidden;
   aspect-ratio: 4 / 3;
   display: flex;
   align-items: center;
@@ -104,8 +109,18 @@
   transition: transform 0.4s ease;
 }
 
+.al-sahara-dish-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
 .al-sahara-dish-tag {
   position: absolute;
+  z-index: 1;
   top: 12px;
   left: 12px;
   background-color: var(--color-acento);

@@ -3,10 +3,8 @@
     <div class="row align-items-center gy-5 gx-lg-5">
 
       <div class="col-lg-6 position-relative al-sahara-reveal">
-        <div class="al-sahara-hero-img d-flex flex-column align-items-center justify-content-center text-center p-4">
-          <span class="al-sahara-hero-img-icon">🕌</span>
-          <span class="al-sahara-hero-img-text">Aquí va una foto real del salón o los platos de Al Sahara</span>
-          <span class="al-sahara-hero-img-path">assets/hero-restaurante.jpg</span>
+        <div class="al-sahara-hero-img">
+          <img src="assets/img/hero-restaurante.jpg" alt="Salón del restaurante Al Sahara con lámparas árabes, sillones y mesas puestas" width="1200" height="900" fetchpriority="high">
         </div>
 
         <div class="al-sahara-hero-badge d-flex flex-column align-items-center justify-content-center text-center">
