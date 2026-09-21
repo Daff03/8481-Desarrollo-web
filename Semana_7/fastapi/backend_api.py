@@ -25,8 +25,8 @@ def products():
 @app.get("/orders")
 def orders():
     return  {
-        "orders": {
+        "orders": [
             {"id": 1001, "status": "paid"},
             {"id": 1002, "status": "pending"}
-        }
+        ]
     }
