@@ -18,12 +18,29 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Build static site from PHP includes
+        run: |
+          mkdir -p _site
+          cp -r FrontEnd/. _site/
+          cd _site
+          php index.php > index.html
+          rm -f index.php
+          rm -rf components
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './FrontEnd'
+          path: './_site'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
