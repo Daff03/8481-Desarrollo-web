@@ -1,11 +1,12 @@
+import os
+import secrets  
+
 from fastapi import ( 
     FastAPI,
     Header,
     HTTPException,
     Depends
     )
-import os
-import secrets  
 
 app = FastAPI(
     title ="Protected Backend API",
