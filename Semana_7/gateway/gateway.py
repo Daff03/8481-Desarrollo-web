@@ -1,27 +1,7 @@
-import os
-import secrets
+from fastapi import FastAPI
 import httpx
 
-from fastapi import(
-    FastAPI,
-    Header,
-    HTTPException,
-    Request,
-    Response
-    )
-
-from fastapi.security import(
-    HTTPBearer,
-    HTTPAuthorizationCredentials
-)
-
 app = FastAPI(title = "Local API Gateway")
-
-
-security = HTTPBearer(
-    auto_error=False
-)
-
 
 BACKEND_URL = "http://localhost:9000"  # fastapi
 
