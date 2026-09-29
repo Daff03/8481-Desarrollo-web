@@ -42,7 +42,7 @@ if not VAULT_TOKEN:
 async def get_gataway_secret():
     url = (
         f"{VAULT_ADDR}" 
-        "v1/secret/data/gateway"
+        "/v1/secret/data/gateway"
     )
     headers = {
         "X-Vault-Token": VAULT_TOKEN
@@ -117,7 +117,7 @@ async def authenticate_client(
 #        response = await client.get(f"{BACKEND_URL}/orders")
 #        return response.json()
 
-@app.api_route("api/{path:path}", methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
+@app.api_route("/api/{path:path}", methods=["GET", "POST", "PUT", "PATCH", "DELETE"])
 
 async def proxy(
     path: str, 
