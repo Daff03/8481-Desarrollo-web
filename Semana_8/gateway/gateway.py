@@ -5,7 +5,6 @@ import httpx
 
 from fastapi import(
     FastAPI,
-    Header,
     HTTPException,
     Request,
     Response
@@ -33,13 +32,14 @@ VAULT_TOKEN = os.getenv(
 
 BACKEND_URL = "http://localhost:9000"  # fastapi
 
-if not VAULT_TOKEN:
-    raise RuntimeError("" \
-    "VAULT_TOKEN no esta configurado"
-    )
-
 #Obtener secreto de Vault
 async def get_gataway_secret():
+    if not VAULT_TOKEN:
+        raise HTTPException(
+            status_code=500,
+            detail="VAULT_TOKEN no esta configurado"
+        )
+
     url = (
         f"{VAULT_ADDR}" 
         "/v1/secret/data/gateway"
@@ -48,24 +48,39 @@ async def get_gataway_secret():
         "X-Vault-Token": VAULT_TOKEN
     }
 
-    async with httpx.AsyncClient(
-        timeout=5.0
-        ) as client:
-        response = await client.get(
-            url, 
-            headers=headers
-        )
+    try:
+        async with httpx.AsyncClient(
+            timeout=5.0
+            ) as client:
+            response = await client.get(
+                url,
+                headers=headers
+            )
+    except httpx.HTTPError as exc:
+        raise HTTPException(
+            status_code=500,
+            detail="No fue posible acceder a Vault"
+        ) from exc
+
     if response.status_code != 200:
         raise HTTPException(
             status_code=500,
             detail="No fue posible acceder a Vault"
         )
-    vault_response = response.json()
-    return vault_response[
-        "data"
-    ][
-        "data"
-    ]
+    try:
+        vault_response = response.json()
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=500,
+            detail="Respuesta de Vault invalida"
+        ) from exc
+    data = vault_response.get("data", {}).get("data")
+    if not data:
+        raise HTTPException(
+            status_code=500,
+            detail="Respuesta de Vault invalida"
+        )
+    return data
 
 async def authenticate_client(
         credentials: 
@@ -77,15 +92,14 @@ async def authenticate_client(
             status_code=401,
             detail="Bearer token requerido"
         )
-    vault_secret = (
-        await get_gataway_secret()
-    )
-    expected_token = vault_secret[
-        "client_token"
-    ]
-    recieved_token = (
-        credentials.credentials
-    )
+    vault_secret = await get_gataway_secret()
+    expected_token = vault_secret.get("client_token")
+    if not expected_token:
+        raise HTTPException(
+            status_code=500,
+            detail="Configuracion de Vault invalida"
+        )
+    recieved_token = credentials.credentials
 
     valid = secrets.compare_digest(
         recieved_token,
@@ -97,11 +111,17 @@ async def authenticate_client(
             status_code=401,
             detail="Token invalido"
         )
+
+    backend_secret = vault_secret.get("backend_shared_secret")
+    if not backend_secret:
+        raise HTTPException(
+            status_code=500,
+            detail="Configuracion de Vault invalida"
+        )
+
     return {
         "client_id": "student_client",
-        "backend_secret": vault_secret[
-            "backend_shared_secret"
-        ]
+        "backend_secret": backend_secret
     }
 
 #https://localhost:8000/api/products
