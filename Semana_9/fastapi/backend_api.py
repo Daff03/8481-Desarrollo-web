@@ -46,9 +46,16 @@ def health(x_authenticated_client: str | None = Header(default=None)):
     "/products",
     dependencies=[Depends(verify_gateway)]
     )
-def products(x_authenticated_client: str | None = Header(default=None)):
+def products(x_authenticated_client: str | None = Header(default=None),
+             x_authenticated_user: str | None = Header(default=None),
+             x_authenticated_roles: str | None = Header(default=None)
+        ):
     return{
-        "authenticated_client": x_authenticated_client,
+        "identidy" : {
+            "client_id": x_authenticated_client,
+            "username": x_authenticated_user,
+            "roles": x_authenticated_roles
+        },
         "products": [
             {"id": 1, "name": "Hummus Tradicional", "price": 6990},
             {"id": 2, "name": "Baba Ganoush", "price": 7490},
@@ -60,9 +67,16 @@ def products(x_authenticated_client: str | None = Header(default=None)):
     "/orders",
     dependencies=[Depends(verify_gateway)]
     )
-def orders(x_authenticated_client: str | None = Header(default=None)):
+def orders(x_authenticated_client: str | None = Header(default=None),
+             x_authenticated_user: str | None = Header(default=None),
+             x_authenticated_roles: str | None = Header(default=None)
+        ):
     return{
-        "authenticated_client": x_authenticated_client,
+        "identidy" : {
+            "client_id": x_authenticated_client,
+            "username": x_authenticated_user,
+            "roles": x_authenticated_roles
+        },
         "orders": [
             {"id": 1001, "status": "paid"},
             {"id": 1002, "status": "pending"}

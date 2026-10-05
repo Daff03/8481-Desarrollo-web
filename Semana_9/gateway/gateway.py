@@ -143,7 +143,11 @@ async def proxy(
         "X-Backend-Secret": 
             auth["backend_secret"],
         "X-Authenticated-Client": 
-            auth["client_id"]
+            auth["client_id"],
+        "X-Authenticated-User": 
+            auth["username"],
+        "X-Authenticated-Roles":
+            ",".join(auth["roles"])
     } 
 
     content_type = request.headers.get(
