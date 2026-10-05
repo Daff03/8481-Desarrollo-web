@@ -158,8 +158,7 @@ SESSIONS = {}
 TOKEN_LIFETIME_MINUTES = 15
 
 AUTH_INTROSPECTION_SECRET = os.getenv(
-    'AUTH_INTROSPECTION_SECRET',
-    'demo-instropection-secret' #gateway-auth-secret-789
+    'AUTH_INTROSPECTION_SECRET',"gateway-auth-secret-789"
 )
 
 class LoginRequest(BaseModel):
@@ -170,8 +169,9 @@ class instrospectionRequest(BaseModel):
     token: str
 
 @app.post("/login")
-def login(request: LoginRequest):
-    x_gateway_auth_secret: str = Header(default="")
+def login(
+    request: LoginRequest,x_gateway_auth_secret: str = Header(default="")
+):
     if not secrets.compare_digest(
         x_gateway_auth_secret,
         AUTH_INTROSPECTION_SECRET
@@ -255,8 +255,7 @@ def logout(
     }
 
 @app.get("/health")
-def health():
-    x_gateway_auth_secret: str = Header(default="")
+def health(x_gateway_auth_secret: str = Header(default="")):
     if not secrets.compare_digest(
         x_gateway_auth_secret,
         AUTH_INTROSPECTION_SECRET
