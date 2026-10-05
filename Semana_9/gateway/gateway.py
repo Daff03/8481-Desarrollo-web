@@ -23,6 +23,10 @@ security = HTTPBearer(
     auto_error=False
 )
 
+AUTH_SERVICE_URL = os.getenv(
+    "AUTH_SERVICE_URL", "http://127.0.0.1:8100"
+)
+
 VAULT_ADDR = os.getenv(
     "VAULT_ADDR", "http://127.0.0.1:8200"
 )
@@ -77,31 +81,37 @@ async def authenticate_client(
             status_code=401,
             detail="Bearer token requerido"
         )
-    vault_secret = (
+    gateway_secret = (
         await get_gataway_secret()
     )
-    expected_token = vault_secret[
-        "client_token"
-    ]
-    recieved_token = (
-        credentials.credentials
+    introspection_secret = (
+        gateway_secret["auth_introspection_secret"]
     )
-
-    valid = secrets.compare_digest(
-        recieved_token,
-        expected_token
-    )
-
-    if not valid:
+    try:
+        async with httpx.AsyncClient(timeout=5.0) as client:
+            response = await client.post(
+                f"{AUTH_SERVICE_URL}/introspect",
+                json={"token": credentials.credentials} , 
+                headers={
+                    "X-Gateway_Auth_Secret" : introspection_secret
+                }
+            )
+    except httpx.RequestError:
+        raise HTTPException(
+            status_code=502,
+            detail="Servicio de autenticacion no disponible"
+        )
+    identity = response.json()
+    if not identity.get("active" , False):
         raise HTTPException(
             status_code=401,
-            detail="Token invalido"
+            detail="Token invalido o expirado"
         )
     return {
-        "client_id": "student_client",
-        "backend_secret": vault_secret[
-            "backend_shared_secret"
-        ]
+        "user_id": identity["user_id"],
+        "username": identity["username"],
+        "roles": identity["roles"],
+        "backend_secret": gateway_secret["backend_secret"],
     }
 
 #https://localhost:8000/api/products
