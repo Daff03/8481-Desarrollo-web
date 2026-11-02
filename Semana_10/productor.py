@@ -1,3 +1,12 @@
+
+
+
+
+
+
+
+
+
 import stomp
 import argparse
 import json
@@ -10,10 +19,36 @@ def crear_mensaje(formato: str, pedido: dict, texto: str) -> tuple[str, str]:
     if formato == "texto":
         return texto, "text/plain; charset=utf-8"
 
+    if formato == "fijo":
+        # Contrato Fixed 36 chars: ID[6], CLIENTE[20], MONTO[10]
+        identificador = str(pedido["id"])
+        cliente = str(pedido["cliente"])
+        monto = Decimal(pedido["monto"])
+        monto_campo = f"{monto:010.2f}"
+        if not (identificador.isascii() and identificador.isdigit() and len(identificador) <= 6):
+            raise ValueError("En formato fijo, --id debe tener hasta 6 digitos ASCII")
+        if len(cliente) > 20 or any(ord(c) > 127 for c in cliente):
+            raise ValueError("En formato fijo, --cliente admite hasta 20 caracteres ASCII")
+        if monto < 0 or len(monto_campo) != 10:
+            raise ValueError("En formato fijo, --monto debe estar entre 0 y 99999999.99")
+        return f"{identificador.zfill(6)}{cliente:<20}{monto_campo}", "text/plain; charset=utf-8"
+
+    if formato == "json":
+        return json.dumps(pedido, ensure_ascii=False), "application/json; charset=utf-8"
+
+    if formato == "xml":
+        raiz = ET.Element("pedido")
+        for clave, valor in pedido.items():
+            ET.SubElement(raiz, clave).text = str(valor)
+        return ET.tostring(raiz, encoding="unicode"), "application/xml; charset=utf-8"
+
+    raise ValueError(f"Formato desconocido: {formato}")
+
 def main():
     parser = argparse.ArgumentParser(description="Productor STOMP")
     parser.add_argument("--formato", choices=["texto", "fijo", "xml", "json"], required=True, help="Formato del mensaje a enviar")
     parser.add_argument("--mensaje", default="Hola desde el productor STOMP", help="Mensaje de texto libre")
+    parser.add_argument("--id", default="1", help="Identificador del pedido")
     parser.add_argument("--cliente", default="Mario Rossi", help="Nombre del cliente (ASCII, max 20 caracteres)")
     parser.add_argument("--monto", default="123.45", help="Monto del pedido (decimal, max 99999999.99)")
     parser.add_argument("--host", default="127.0.0.1", help="Host del broker STOMP")
