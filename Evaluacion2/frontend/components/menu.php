@@ -21,6 +21,8 @@
       </li>
     </ul>
 
+    <p class="text-center text-muted small mb-4">Agrega platos al carrito y confirma tu pedido con entrega a domicilio gratis (radio de 3 km).</p>
+
     <div class="row row-cols-1 row-cols-md-3 g-4" id="menuGrid">
 
       <!-- Entradas -->
@@ -30,10 +32,13 @@
             <img class="al-sahara-dish-photo" src="assets/img/platos/hummus-tradicional.jpg" alt="Hummus tradicional con aceite de oliva y pan pita" width="900" height="600" loading="lazy">
             <span class="badge al-sahara-dish-tag">Popular</span>
           </div>
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
             <h5 class="card-title al-sahara-dish-name">Hummus Tradicional</h5>
             <p class="card-text small al-sahara-dish-desc">Puré de garbanzos con tahini, aceite de oliva y especias árabes, servido con pan pita tibio.</p>
-            <span class="al-sahara-dish-price">$6.990 CLP</span>
+            <div class="d-flex justify-content-between align-items-center mt-auto">
+              <span class="al-sahara-dish-price">$6.990 CLP</span>
+              <button type="button" class="btn btn-sm btn-al-sahara-primario al-sahara-add" data-id="1">Agregar</button>
+            </div>
           </div>
         </div>
       </div>
@@ -44,10 +49,13 @@
             <img class="al-sahara-dish-photo" src="assets/img/platos/baba-ganoush.jpg" alt="Baba ganoush de berenjena ahumada" width="900" height="600" loading="lazy">
             <span class="badge al-sahara-dish-tag">Popular</span>
           </div>
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
             <h5 class="card-title al-sahara-dish-name">Baba Ganoush</h5>
             <p class="card-text small al-sahara-dish-desc">Berenjena ahumada al fuego, mezclada con ajo, limón y tahini.</p>
-            <span class="al-sahara-dish-price">$7.490 CLP</span>
+            <div class="d-flex justify-content-between align-items-center mt-auto">
+              <span class="al-sahara-dish-price">$7.490 CLP</span>
+              <button type="button" class="btn btn-sm btn-al-sahara-primario al-sahara-add" data-id="2">Agregar</button>
+            </div>
           </div>
         </div>
       </div>
@@ -57,13 +65,17 @@
           <div class="al-sahara-dish-img">
             <img class="al-sahara-dish-photo" src="assets/img/platos/fatayer-espinaca.jpg" alt="Fatayer de espinaca horneados" width="900" height="600" loading="lazy">
           </div>
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
             <h5 class="card-title al-sahara-dish-name">Fatayer de Espinaca</h5>
             <p class="card-text small al-sahara-dish-desc">Empanadillas árabes horneadas, rellenas de espinaca, cebolla y especias.</p>
-            <span class="al-sahara-dish-price">$5.990 CLP</span>
+            <div class="d-flex justify-content-between align-items-center mt-auto">
+              <span class="al-sahara-dish-price">$5.990 CLP</span>
+              <button type="button" class="btn btn-sm btn-al-sahara-primario al-sahara-add" data-id="3">Agregar</button>
+            </div>
           </div>
         </div>
       </div>
+
 
       <!-- Carnes -->
       <div class="col al-sahara-dish d-none" data-category="carnes">
@@ -72,10 +84,13 @@
             <img class="al-sahara-dish-photo" src="assets/img/platos/shawarma-cordero.jpg" alt="Shawarma de cordero sobre arroz amarillo con almendras y salsa de yogur" width="900" height="600" loading="lazy">
             <span class="badge al-sahara-dish-tag">Popular</span>
           </div>
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
             <h5 class="card-title al-sahara-dish-name">Shawarma de Cordero</h5>
             <p class="card-text small al-sahara-dish-desc">Cordero marinado 24 horas en especias árabes, servido con arroz y salsa de ajo.</p>
-            <span class="al-sahara-dish-price">$12.990 CLP</span>
+            <div class="d-flex justify-content-between align-items-center mt-auto">
+              <span class="al-sahara-dish-price">$12.990 CLP</span>
+              <button type="button" class="btn btn-sm btn-al-sahara-primario al-sahara-add" data-id="4">Agregar</button>
+            </div>
           </div>
         </div>
       </div>
@@ -85,10 +100,13 @@
           <div class="al-sahara-dish-img">
             <img class="al-sahara-dish-photo" src="assets/img/platos/kebab-mixto.jpg" alt="Brochetas de cordero y pollo a la parrilla sobre arroz árabe" width="900" height="600" loading="lazy">
           </div>
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
             <h5 class="card-title al-sahara-dish-name">Kebab Mixto</h5>
             <p class="card-text small al-sahara-dish-desc">Brochetas de cordero y pollo a la parrilla, acompañadas de arroz árabe.</p>
-            <span class="al-sahara-dish-price">$13.990 CLP</span>
+            <div class="d-flex justify-content-between align-items-center mt-auto">
+              <span class="al-sahara-dish-price">$13.990 CLP</span>
+              <button type="button" class="btn btn-sm btn-al-sahara-primario al-sahara-add" data-id="5">Agregar</button>
+            </div>
           </div>
         </div>
       </div>
@@ -98,13 +116,17 @@
           <div class="al-sahara-dish-img">
             <img class="al-sahara-dish-photo" src="assets/img/platos/kafta-al-sahara.jpg" alt="Kafta a la parrilla bañada en salsa de tahini" width="900" height="600" loading="lazy">
           </div>
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
             <h5 class="card-title al-sahara-dish-name">Kafta Al Sahara</h5>
             <p class="card-text small al-sahara-dish-desc">Carne molida especiada a la parrilla, bañada en salsa de tahini.</p>
-            <span class="al-sahara-dish-price">$11.990 CLP</span>
+            <div class="d-flex justify-content-between align-items-center mt-auto">
+              <span class="al-sahara-dish-price">$11.990 CLP</span>
+              <button type="button" class="btn btn-sm btn-al-sahara-primario al-sahara-add" data-id="6">Agregar</button>
+            </div>
           </div>
         </div>
       </div>
+
 
       <!-- Vegetarianos -->
       <div class="col al-sahara-dish d-none" data-category="vegetarianos">
@@ -113,10 +135,13 @@
             <img class="al-sahara-dish-photo" src="assets/img/platos/falafel-casero.jpg" alt="Falafel casero con salsa de yogur, tomate y pepino" width="900" height="600" loading="lazy">
             <span class="badge al-sahara-dish-tag">Popular</span>
           </div>
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
             <h5 class="card-title al-sahara-dish-name">Falafel Casero</h5>
             <p class="card-text small al-sahara-dish-desc">Croquetas de garbanzo y hierbas frescas, fritas al momento, con salsa de yogur.</p>
-            <span class="al-sahara-dish-price">$8.990 CLP</span>
+            <div class="d-flex justify-content-between align-items-center mt-auto">
+              <span class="al-sahara-dish-price">$8.990 CLP</span>
+              <button type="button" class="btn btn-sm btn-al-sahara-primario al-sahara-add" data-id="7">Agregar</button>
+            </div>
           </div>
         </div>
       </div>
@@ -126,10 +151,13 @@
           <div class="al-sahara-dish-img">
             <img class="al-sahara-dish-photo" src="assets/img/platos/tabbouleh.jpg" alt="Ensalada tabbouleh con perejil, bulgur y tomate" width="900" height="600" loading="lazy">
           </div>
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
             <h5 class="card-title al-sahara-dish-name">Tabbouleh</h5>
             <p class="card-text small al-sahara-dish-desc">Ensalada de perejil fresco, trigo bulgur, tomate y limón.</p>
-            <span class="al-sahara-dish-price">$6.490 CLP</span>
+            <div class="d-flex justify-content-between align-items-center mt-auto">
+              <span class="al-sahara-dish-price">$6.490 CLP</span>
+              <button type="button" class="btn btn-sm btn-al-sahara-primario al-sahara-add" data-id="8">Agregar</button>
+            </div>
           </div>
         </div>
       </div>
@@ -139,13 +167,17 @@
           <div class="al-sahara-dish-img">
             <img class="al-sahara-dish-photo" src="assets/img/platos/fatteh-garbanzos.jpg" alt="Fatteh de garbanzos con yogur y granada" width="900" height="600" loading="lazy">
           </div>
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
             <h5 class="card-title al-sahara-dish-name">Fatteh de Garbanzos</h5>
             <p class="card-text small al-sahara-dish-desc">Pan pita crocante con garbanzos, yogur y un toque de granada.</p>
-            <span class="al-sahara-dish-price">$8.490 CLP</span>
+            <div class="d-flex justify-content-between align-items-center mt-auto">
+              <span class="al-sahara-dish-price">$8.490 CLP</span>
+              <button type="button" class="btn btn-sm btn-al-sahara-primario al-sahara-add" data-id="9">Agregar</button>
+            </div>
           </div>
         </div>
       </div>
+
 
       <!-- Postres -->
       <div class="col al-sahara-dish d-none" data-category="postres">
@@ -154,10 +186,13 @@
             <img class="al-sahara-dish-photo" src="assets/img/platos/baklava.jpg" alt="Baklava de nueces con miel de rosas" width="900" height="600" loading="lazy">
             <span class="badge al-sahara-dish-tag">Popular</span>
           </div>
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
             <h5 class="card-title al-sahara-dish-name">Baklava</h5>
             <p class="card-text small al-sahara-dish-desc">Hojaldre crujiente relleno de nueces, bañado en miel de rosas.</p>
-            <span class="al-sahara-dish-price">$4.990 CLP</span>
+            <div class="d-flex justify-content-between align-items-center mt-auto">
+              <span class="al-sahara-dish-price">$4.990 CLP</span>
+              <button type="button" class="btn btn-sm btn-al-sahara-primario al-sahara-add" data-id="10">Agregar</button>
+            </div>
           </div>
         </div>
       </div>
@@ -167,10 +202,13 @@
           <div class="al-sahara-dish-img">
             <img class="al-sahara-dish-photo" src="assets/img/platos/kunafa.jpg" alt="Kunafa con pistachos y almíbar" width="900" height="600" loading="lazy">
           </div>
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
             <h5 class="card-title al-sahara-dish-name">Kunafa</h5>
             <p class="card-text small al-sahara-dish-desc">Queso dulce cubierto con fideos crujientes, bañado en almíbar.</p>
-            <span class="al-sahara-dish-price">$5.990 CLP</span>
+            <div class="d-flex justify-content-between align-items-center mt-auto">
+              <span class="al-sahara-dish-price">$5.990 CLP</span>
+              <button type="button" class="btn btn-sm btn-al-sahara-primario al-sahara-add" data-id="11">Agregar</button>
+            </div>
           </div>
         </div>
       </div>
@@ -180,10 +218,13 @@
           <div class="al-sahara-dish-img">
             <img class="al-sahara-dish-photo" src="assets/img/platos/muhallabia.jpg" alt="Muhallabia, pudín de leche con pistachos y pétalos de rosa" width="900" height="600" loading="lazy">
           </div>
-          <div class="card-body">
+          <div class="card-body d-flex flex-column">
             <h5 class="card-title al-sahara-dish-name">Muhallabia</h5>
             <p class="card-text small al-sahara-dish-desc">Pudín de leche con agua de rosas, decorado con pistachos.</p>
-            <span class="al-sahara-dish-price">$4.490 CLP</span>
+            <div class="d-flex justify-content-between align-items-center mt-auto">
+              <span class="al-sahara-dish-price">$4.490 CLP</span>
+              <button type="button" class="btn btn-sm btn-al-sahara-primario al-sahara-add" data-id="12">Agregar</button>
+            </div>
           </div>
         </div>
       </div>

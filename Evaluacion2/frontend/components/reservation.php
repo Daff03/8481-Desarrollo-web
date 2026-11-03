@@ -3,20 +3,21 @@
     <div class="row g-5">
 
       <div class="col-lg-6">
-        <h3 class="mb-4">Datos de la reserva</h3>
+        <h3 class="mb-4">Reservar mesa</h3>
 
-        <div class="alert alert-success d-none" id="alerta-exito">Reserva realizada con éxito.</div>
-        <div class="alert alert-danger d-none" id="alerta-error">Hubo un problema. Intenta nuevamente.</div>
+        <div class="alert alert-success d-none" id="alerta-exito" role="alert">Reserva realizada con éxito. Te enviaremos la confirmación por correo.</div>
+        <div class="alert alert-danger d-none" id="alerta-error" role="alert">Hubo un problema. Intenta nuevamente.</div>
 
         <form id="form-reserva" novalidate>
           <div class="row g-3">
             <div class="col-md-8">
-              <label class="form-label">Nombre completo</label>
-              <input type="text" class="form-control input-al-sahara" name="nombre" required>
+              <label class="form-label" for="r-nombre">Nombre completo</label>
+              <input type="text" class="form-control input-al-sahara" id="r-nombre" name="nombre" autocomplete="name" required>
+              <div class="invalid-feedback">Ingresa tu nombre completo.</div>
             </div>
             <div class="col-md-4">
-              <label class="form-label">N° de personas</label>
-              <select class="form-select input-al-sahara" name="personas">
+              <label class="form-label" for="r-personas">N° de personas</label>
+              <select class="form-select input-al-sahara" id="r-personas" name="personas">
                 <option value="1">1 persona</option>
                 <option value="2" selected>2 personas</option>
                 <option value="3">3 personas</option>
@@ -25,23 +26,25 @@
                 <option value="6">6 personas</option>
                 <option value="7">7 personas</option>
                 <option value="8">8 personas</option>
-                <option value="9+">9 o más personas</option>
+                <option value="9">9 o más personas</option>
               </select>
             </div>
             <div class="col-12">
-              <label class="form-label">Correo electrónico</label>
-              <input type="email" class="form-control input-al-sahara" name="email" required>
+              <label class="form-label" for="r-email">Correo electrónico</label>
+              <input type="email" class="form-control input-al-sahara" id="r-email" name="email" autocomplete="email" required>
+              <div class="invalid-feedback">Ingresa un correo válido.</div>
             </div>
             <div class="col-12">
-              <label class="form-label">Fecha y hora</label>
-              <input type="datetime-local" class="form-control input-al-sahara" name="fecha" required>
+              <label class="form-label" for="r-fecha">Fecha y hora</label>
+              <input type="datetime-local" class="form-control input-al-sahara" id="r-fecha" name="fecha" required>
+              <div class="invalid-feedback">Elige una fecha y hora futuras.</div>
             </div>
             <div class="col-12">
-              <label class="form-label">Mensaje opcional</label>
-              <textarea class="form-control input-al-sahara" name="mensaje" rows="3"></textarea>
+              <label class="form-label" for="r-mensaje">Mensaje opcional</label>
+              <textarea class="form-control input-al-sahara" id="r-mensaje" name="mensaje" rows="3" maxlength="300"></textarea>
             </div>
             <div class="col-12">
-              <button type="submit" class="btn btn-al-sahara-primario w-100 py-2">Reservar Ahora</button>
+              <button type="submit" class="btn btn-al-sahara-primario w-100 py-2" id="btn-reserva">Reservar ahora</button>
             </div>
           </div>
         </form>
