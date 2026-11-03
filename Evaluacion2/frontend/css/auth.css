@@ -1,0 +1,9 @@
+.al-sahara-page { padding: 130px 0 80px; min-height: 80vh; background-color: var(--color-secundario); }
+.al-sahara-card { background: var(--color-blanco); border-radius: var(--radius-base); padding: 2rem; box-shadow: 0 20px 45px -25px rgba(44,26,14,.3); }
+.al-sahara-page h1 { font-size: clamp(26px, 3.4vw, 36px); color: var(--color-primario); }
+.al-sahara-page .form-label { font-weight: 500; font-size: .9rem; }
+.al-sahara-page .invalid-feedback { font-size: .8rem; }
+.al-sahara-cart-row { display: flex; align-items: center; gap: 1rem; padding: .75rem 0; border-bottom: 1px solid rgba(44,26,14,.1); }
+.al-sahara-cart-row:last-child { border-bottom: none; }
+.al-sahara-cart-row .qty { width: 72px; }
+.al-sahara-total { font-family: var(--font-titulos); font-size: 1.4rem; color: var(--color-acento-oscuro); }
