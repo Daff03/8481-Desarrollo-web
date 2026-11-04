@@ -6,6 +6,11 @@
     "gw-orders":        ["gateway", "orders"],
     "gw-payments":      ["gateway", "payments"],
     "gw-graphql":       ["gateway", "graphql-gateway"],
+    "gql-orders":       ["graphql-gateway", "orders"],
+    "gql-inventory":    ["graphql-gateway", "inventory"],
+    "gql-payments":     ["graphql-gateway", "payments"],
+    "internal-jwt":     ["gateway", "graphql-gateway", "auth", "clients", "inventory", "orders", "payments"],
+    "auth-clients":     ["auth", "clients"],
     "orders-inventory": ["orders", "inventory"],
     "orders-payments":  ["orders", "payments"],
     "orders-clients":   ["orders", "clients"],
@@ -14,7 +19,11 @@
     "db-clients":       ["clients"],
     "db-inventory":     ["inventory"],
     "db-orders":        ["orders"],
-    "db-payments":      ["payments"]
+    "db-payments":      ["payments"],
+    "mq-payments":      ["payments"],
+    "mq-orders":        ["orders"],
+    "mq-clients":       ["clients"],
+    "mq-notifier":      ["notifier"]
   },
   "rotators": ["admin-cli"]
 }

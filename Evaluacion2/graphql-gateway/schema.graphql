@@ -1,0 +1,86 @@
+"""
+Agregaciones sobre orders, inventory y payments. Cada servicio conserva su autoridad y sus reglas:
+este gateway solo compone lecturas y delega la anulación en orders.
+"""
+type Query {
+  "Resumen de un pedido: estado y detalle (orders), ficha actual de cada plato (inventory) y estado del pago (payments). Un cliente solo obtiene pedidos propios; si no es suyo, devuelve null."
+  resumenPedido(id: ID!): ResumenPedido
+  "Pedidos del usuario (todos, si es personal del local). Máximo 20 por página."
+  misPedidos(page: Int = 1, limit: Int = 10): [ResumenPedido!]!
+}
+
+type Mutation {
+  "Anula un pedido con motivo. Las reglas (quién puede, hasta cuándo) las aplica orders."
+  anularPedido(id: ID!, motivo: String!): ResumenPedido
+}
+
+type ResumenPedido {
+  id: ID!
+  estado: String!
+  tipo: String!
+  total: Int!
+  creadoEn: String!
+  direccionEntrega: String
+  comuna: String
+  comentario: String
+  motivoAnulacion: String
+  items: [ItemPedido!]!
+  historial: [Evento!]!
+  boleta: Boleta
+  despacho: Despacho
+  "Estado del último pago (payments). Null si aún no se inició o si payments no responde."
+  pago: Pago
+  "Solo personal del local (cajero, administrador)."
+  cliente: ClienteVista
+  "Solo personal del local."
+  requiereReembolso: Boolean
+}
+
+type ItemPedido {
+  nombre: String!
+  cantidad: Int!
+  precioUnitario: Int!
+  subtotal: Int!
+  "Ficha actual del plato (inventory). Null si el plato ya no está en la carta o si inventory no responde."
+  producto: Producto
+}
+
+type Producto {
+  id: ID!
+  slug: String!
+  nombre: String!
+  categoria: String!
+  descripcion: String
+  imagen: String
+  precio: Int!
+  disponible: Boolean!
+}
+
+type Pago {
+  id: ID!
+  estado: String!
+  monto: Int!
+}
+
+type Evento {
+  estado: String!
+  ts: String!
+}
+
+type Boleta {
+  numero: Int!
+  emitidaEn: String!
+}
+
+type Despacho {
+  estado: String!
+  conductor: String
+  salidaEn: String
+  entregadoEn: String
+}
+
+type ClienteVista {
+  id: ID!
+  nombre: String!
+  telefono: String
+}

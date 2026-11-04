@@ -1,0 +1,5 @@
+{
+  "radio_km": 3,
+  "nota": "Aproximación por comuna: no hay geocodificación. Ajustar 'comunas' a las que caen dentro de 3 km del local (la dirección del local está por definir).",
+  "comunas": ["viña del mar"]
+}

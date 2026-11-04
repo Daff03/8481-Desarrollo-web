@@ -10,7 +10,7 @@ import gen_secrets
 @pytest.fixture()
 def ctx(tmp_path, monkeypatch):
     gen_secrets.generate(out=tmp_path, policy_path=ROOT / "secrets-manager" / "policy.json")
-    monkeypatch.setenv("SECRETS_DIR", str(tmp_path))
+    monkeypatch.setenv("SECRETS_DIR", str(tmp_path / "manager"))
     monkeypatch.setenv("POLICY_PATH", str(ROOT / "secrets-manager" / "policy.json"))
     sys.path.insert(0, str(ROOT / "secrets-manager"))
     main = importlib.import_module("main"); importlib.reload(main)
@@ -52,6 +52,22 @@ def test_solo_admin_rota_y_queda_clave_anterior(ctx):
     assert c.post("/admin/rotate/gw-orders", headers=h(k, "admin-cli")).status_code == 200
     d = c.get("/secrets/gw-orders", headers=h(k, "orders")).json()
     assert d["current"] != antes and d["previous"] == antes
+
+
+def test_gen_secrets_separa_lo_que_ve_cada_componente(tmp_path):
+    gen_secrets.generate(out=tmp_path, policy_path=ROOT / "secrets-manager" / "policy.json")
+    assert sorted(p.name for p in (tmp_path / "manager").iterdir()) == ["service_key_hashes.json", "store.json"]
+    store = json.loads((tmp_path / "manager" / "store.json").read_text())
+    init = (tmp_path / "mongo-init" / "init.js").read_text()
+    for svc in ("auth", "clients", "inventory", "orders", "payments"):
+        assert f'getSiblingDB("{svc}_db").createUser({{user: "{svc}"' in init
+        assert store[f"db-{svc}"]["current"] in init          # misma clave que entrega el gestor
+    assert "service_keys" not in init and (tmp_path / "mongo_root_password").read_text()
+    assert "SERVICE_KEY=" in (tmp_path / "env" / "gateway.env").read_text()
+    assert f"WEBHOOK_SECRET={store['prov-webhook']['current']}" in (tmp_path / "env" / "provider-sim.env").read_text()
+    assert "WEBHOOK_SECRET" not in (tmp_path / "env" / "payments.env").read_text()
+    seed = (tmp_path / "seed.env").read_text()
+    assert "SEED_ADMIN_PASSWORD=" in seed and "SEED_CAJERO_PASSWORD=" in seed
 
 
 def test_la_auditoria_no_contiene_valores(ctx, caplog):

@@ -1,0 +1,246 @@
+# Al Sahara: red pública solo para el gateway; todo lo demás vive en la red privada (sin salida ni puertos publicados).
+# Antes del primer arranque:  python scripts/gen_secrets.py   (crea ./secrets, ignorada por git)
+# Arranque:  docker compose up -d --build        Parada:  docker compose down        Reinicio de datos:  docker compose down -v
+# Correos de prueba (verificación, boleta): ./mail-outbox/outbox.jsonl
+# FRONTEND_URL debe ser la URL real del frontend en XAMPP (se usa en enlaces de correo y en el retorno desde el proveedor).
+
+x-python-service: &python-service
+  restart: unless-stopped
+  read_only: true
+  tmpfs: [/tmp]
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  networks: [private]
+
+networks:
+  public:
+  private:
+    internal: true   # sin acceso a Internet ni al host; solo se alcanzan los contenedores de esta red
+
+volumes:
+  mongo-data:
+  activemq-data:
+
+secrets:
+  mongo_root_password:
+    file: ./secrets/mongo_root_password
+
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    networks: [private]            # sin puertos publicados
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_root_password
+    secrets: [mongo_root_password]
+    volumes:
+      - mongo-data:/data/db
+      - ./secrets/mongo-init:/docker-entrypoint-initdb.d:ro   # crea un usuario por servicio (solo en el primer arranque)
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  activemq:
+    image: apache/activemq-classic:6.1.2   # versión fijada; verificar que exista al hacer el primer pull
+    restart: unless-stopped
+    networks: [private]            # sin puertos publicados; sin consola web
+    volumes:
+      - ./secrets/activemq/activemq.xml:/opt/apache-activemq/conf/activemq.xml:ro   # usuarios y permisos por cola
+      - activemq-data:/opt/apache-activemq/data
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/61613"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  secrets-manager:
+    <<: *python-service
+    build: ./secrets-manager
+    environment:
+      SECRETS_DIR: /secrets
+    volumes:
+      - ./secrets/manager:/secrets   # escribible: la rotación reescribe store.json
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8200/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  auth:
+    <<: *python-service
+    build: { context: ., dockerfile: auth/Dockerfile }
+    env_file: [./secrets/env/auth.env, ./secrets/seed.env]
+    environment:
+      MONGO_URL: mongodb://mongo:27017
+      REQUIRE_EMAIL_VERIFIED: ${REQUIRE_EMAIL_VERIFIED:-true}
+      SEED_ON_START: ${SEED_ON_START:-true}    # crea admin y cajero si no existen (contraseñas en secrets/seed.env)
+    depends_on:
+      mongo: { condition: service_healthy }
+      secrets-manager: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8100/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  svc-clients:
+    <<: *python-service
+    build: { context: ., dockerfile: svc-clients/Dockerfile }
+    env_file: ./secrets/env/clients.env
+    environment:
+      MONGO_URL: mongodb://mongo:27017
+      AUTH_URL: http://auth:8100
+      BROKER_HOST: activemq
+    depends_on:
+      mongo: { condition: service_healthy }
+      secrets-manager: { condition: service_healthy }
+      auth: { condition: service_healthy }
+      activemq: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8300/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  svc-inventory:
+    <<: *python-service
+    build: { context: ., dockerfile: svc-inventory/Dockerfile }
+    env_file: ./secrets/env/inventory.env
+    environment:
+      MONGO_URL: mongodb://mongo:27017
+      SEED_ON_START: ${SEED_ON_START:-true}    # carga los 12 platos solo si la colección está vacía
+    depends_on:
+      mongo: { condition: service_healthy }
+      secrets-manager: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8400/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  svc-orders:
+    <<: *python-service
+    build: { context: ., dockerfile: svc-orders/Dockerfile }
+    env_file: ./secrets/env/orders.env
+    environment:
+      MONGO_URL: mongodb://mongo:27017
+      INVENTORY_URL: http://svc-inventory:8400
+      CLIENTS_URL: http://svc-clients:8300
+      BROKER_HOST: activemq
+      START_CONSUMER: "true"      # consume pagos.aprobados
+      UNPAID_TTL_MINUTES: ${UNPAID_TTL_MINUTES:-30}
+    depends_on:
+      mongo: { condition: service_healthy }
+      secrets-manager: { condition: service_healthy }
+      activemq: { condition: service_healthy }
+      svc-inventory: { condition: service_healthy }
+      svc-clients: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8500/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  svc-payments:
+    <<: *python-service
+    build: { context: ., dockerfile: svc-payments/Dockerfile }
+    env_file: ./secrets/env/payments.env
+    environment:
+      MONGO_URL: mongodb://mongo:27017
+      ORDERS_URL: http://svc-orders:8500
+      BROKER_HOST: activemq
+      PROVIDER_PUBLIC_URL: ${PROVIDER_PUBLIC_URL:-http://localhost:9000}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:8080/8481-Desarrollo-web/8481-Desarrollo-web/Evaluacion2/frontend}
+    depends_on:
+      mongo: { condition: service_healthy }
+      secrets-manager: { condition: service_healthy }
+      activemq: { condition: service_healthy }
+      svc-orders: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8600/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  svc-notifier:
+    <<: *python-service
+    build: { context: ., dockerfile: svc-notifier/Dockerfile }
+    env_file: ./secrets/env/notifier.env
+    environment:
+      BROKER_HOST: activemq
+      START_CONSUMER: "true"
+      MAIL_OUTBOX: /mail/outbox.jsonl      # adaptador de pruebas: los correos quedan en ./mail-outbox/outbox.jsonl
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:8080/8481-Desarrollo-web/8481-Desarrollo-web/Evaluacion2/frontend}
+    volumes:
+      - ./mail-outbox:/mail
+    depends_on:
+      secrets-manager: { condition: service_healthy }
+      activemq: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8800/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # Proveedor de pagos SIMULADO (solo pruebas). Está fuera de la red privada, como un tercero real: no alcanza ningún servicio interno.
+  provider-sim:
+    <<: *python-service
+    build: { context: ., dockerfile: provider-sim/Dockerfile }
+    env_file: ./secrets/env/provider-sim.env
+    environment:
+      GATEWAY_URL: http://gateway:8000
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:8080/8481-Desarrollo-web/8481-Desarrollo-web/Evaluacion2/frontend}
+    networks: [public]
+    ports:
+      - "9000:9000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:9000/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  graphql-gateway:
+    <<: *python-service
+    build: { context: ., dockerfile: graphql-gateway/Dockerfile }
+    env_file: ./secrets/env/graphql-gateway.env
+    environment:
+      ORDERS_URL: http://svc-orders:8500
+      INVENTORY_URL: http://svc-inventory:8400
+      PAYMENTS_URL: http://svc-payments:8600
+      GRAPHQL_INTROSPECTION: ${GRAPHQL_INTROSPECTION:-false}
+    depends_on:
+      secrets-manager: { condition: service_healthy }
+      svc-orders: { condition: service_healthy }
+      svc-inventory: { condition: service_healthy }
+      svc-payments: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8700/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  gateway:
+    <<: *python-service
+    build: { context: ., dockerfile: gateway/Dockerfile }
+    env_file: ./secrets/env/gateway.env
+    environment:
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:8080}
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}   # true cuando haya TLS
+    networks: [public, private]
+    ports:
+      - "8000:8000"                            # único puerto publicado de todo el sistema
+    depends_on:
+      auth: { condition: service_healthy }
+      svc-inventory: { condition: service_healthy }
+      svc-clients: { condition: service_healthy }
+      svc-orders: { condition: service_healthy }
+      svc-payments: { condition: service_healthy }
+      graphql-gateway: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8000/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5

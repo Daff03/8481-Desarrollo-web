@@ -39,7 +39,7 @@
   async function iniciar() {
     try {
       var lista = await api('/products?available=true');
-      lista.forEach(function (p) { productos[p.id] = p; });
+      lista.forEach(function (p) { productos[p.slug] = p; }); // el carrito usa el slug, estable aunque cambie el id interno
       Object.keys(cart).forEach(function (id) { if (!productos[id]) delete cart[id]; }); // platos que ya no están disponibles
       guardar(); pintar();
     } catch (err) { showAlert('alerta', err.message, false); }
@@ -56,12 +56,12 @@
     try {
       var zona = await api('/delivery/coverage?comuna=' + encodeURIComponent(com.value.trim()));
       if (!zona.cubierta) { showAlert('alerta', 'Esa comuna está fuera de la zona de entrega (3 km del local).', false); return; }
-      var items = Object.keys(cart).map(function (id) { return { productId: Number(id), cantidad: cart[id] }; });
+      var items = Object.keys(cart).map(function (id) { return { slug: id, cantidad: cart[id] }; });
       var orden = await api('/orders', { method: 'POST', body: JSON.stringify({
-        items: items, direccionEntrega: dir.value.trim() + ', ' + com.value.trim(), comentario: form.elements.comentario.value.trim()
+        items: items, tipo: 'DELIVERY', direccion: dir.value.trim(), comuna: com.value.trim(), comentario: form.elements.comentario.value.trim()
       }) });
       localStorage.removeItem(KEY);
-      location.href = 'pago.php?order=' + encodeURIComponent(orden.id); // pantalla P08 (siguiente entrega)
+      location.href = 'pago.php?order=' + encodeURIComponent(orden.id); // P08: el pago lo resuelve el proveedor, no esta página
     } catch (err) {
       if (err.status === 401) { location.href = 'login.php?next=pedido.php'; return; }
       showAlert('alerta', err.message, false);

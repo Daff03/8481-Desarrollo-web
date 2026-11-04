@@ -1,0 +1,8 @@
+-r secrets-manager/requirements.txt
+-r auth/requirements.txt
+-r gateway/requirements.txt
+-r svc-orders/requirements.txt
+-r svc-payments/requirements.txt
+-r graphql-gateway/requirements.txt
+pytest
+mongomock

@@ -57,7 +57,10 @@ def get_secret(ref: str, x_service_id: str = Header(default=None), x_service_key
     if consumer not in allowed:  # mismo 403 si la referencia no existe: no revela qué hay
         audit(consumer, ref, "denied")
         raise HTTPException(status_code=403, detail="Sin permiso para esa referencia")
-    entry = STATE["store"][ref]
+    entry = STATE["store"].get(ref)
+    if entry is None:  # está en la política pero no se generó: regenerar con gen_secrets.py --force
+        audit(consumer, ref, "missing_in_store")
+        raise HTTPException(status_code=503, detail="Secreto no disponible")
     previous = entry["previous"] if time.time() - entry["rotated_at"] < GRACE_SECONDS else None
     audit(consumer, ref, "ok")
     return {"ref": ref, "current": entry["current"], "previous": previous}

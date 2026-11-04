@@ -1,0 +1,4 @@
+{
+  "pagos.aprobados":       {"write": ["payments"],          "read": ["orders"]},
+  "notificaciones.correo": {"write": ["clients", "orders"], "read": ["notifier"]}
+}
