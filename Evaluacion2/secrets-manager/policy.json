@@ -1,0 +1,20 @@
+{
+  "refs": {
+    "gw-auth":          ["gateway", "auth"],
+    "gw-clients":       ["gateway", "clients"],
+    "gw-inventory":     ["gateway", "inventory"],
+    "gw-orders":        ["gateway", "orders"],
+    "gw-payments":      ["gateway", "payments"],
+    "gw-graphql":       ["gateway", "graphql-gateway"],
+    "orders-inventory": ["orders", "inventory"],
+    "orders-payments":  ["orders", "payments"],
+    "orders-clients":   ["orders", "clients"],
+    "prov-webhook":     ["payments", "provider-sim"],
+    "db-auth":          ["auth"],
+    "db-clients":       ["clients"],
+    "db-inventory":     ["inventory"],
+    "db-orders":        ["orders"],
+    "db-payments":      ["payments"]
+  },
+  "rotators": ["admin-cli"]
+}
