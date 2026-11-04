@@ -51,10 +51,12 @@ services:
       - ./secrets/activemq/activemq.xml:/opt/apache-activemq/conf/activemq.xml:ro   # usuarios y permisos por cola
       - activemq-data:/opt/apache-activemq/data
     healthcheck:
-      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/61613"]
+      # Sano cuando el puerto STOMP acepta conexiones. Usa bash (/dev/tcp) y, si la imagen no lo trae, nc; 127.0.0.1 evita IPv6.
+      test: ["CMD-SHELL", "(command -v bash >/dev/null 2>&1 && bash -c 'exec 3<>/dev/tcp/127.0.0.1/61613') || nc -z 127.0.0.1 61613"]
       interval: 10s
-      timeout: 3s
-      retries: 10
+      timeout: 5s
+      retries: 12
+      start_period: 40s   # la JVM tarda en arrancar; no cuenta como fallo mientras tanto
 
   secrets-manager:
     <<: *python-service

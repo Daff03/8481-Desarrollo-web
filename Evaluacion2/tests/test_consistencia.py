@@ -258,6 +258,20 @@ def test_compose_archivos_de_entorno_y_montajes_los_genera_gen_secrets(tmp_path)
     assert not faltan, f"gen_secrets.py no genera: {faltan}"
 
 
+def test_archivos_generados_son_utf8_sin_retorno_de_carro(tmp_path):
+    """En Windows Python escribe en cp1252 y con \\r\\n: un activemq.xml que declara UTF-8 pero no lo es hace caer al broker,
+    y un \\r al final de cada línea de un .env se queda pegado al valor."""
+    import xml.etree.ElementTree as ET
+    gen_secrets.generate(out=tmp_path, policy_path=ROOT / "secrets-manager" / "policy.json")
+    archivos = [f for f in tmp_path.rglob("*") if f.is_file()]
+    assert len(archivos) >= 15
+    for f in archivos:
+        raw = f.read_bytes()
+        raw.decode("utf-8")  # lanza UnicodeDecodeError si no es UTF-8 válido
+        assert b"\r" not in raw, f"{f.relative_to(tmp_path)} tiene saltos de línea \\r\\n"
+    ET.fromstring((tmp_path / "activemq" / "activemq.xml").read_bytes())  # como lo lee el broker: bytes + declaración UTF-8
+
+
 def test_compose_dependencias_existen_tienen_salud_y_no_hay_ciclos():
     svcs = COMPOSE["services"]
     grafo = {}

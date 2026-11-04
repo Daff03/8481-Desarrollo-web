@@ -20,6 +20,13 @@ MANAGER_URL = os.environ.get("SECRETS_MANAGER_URL", "http://secrets-manager:8200
 
 QUEUES = ROOT / "activemq" / "queues.json"
 
+
+def _write(path, text):
+    """Siempre UTF-8 y saltos de línea \\n, sin importar el sistema: en Windows Python usa cp1252 y \\r\\n por defecto, y eso
+    deja un activemq.xml que declara UTF-8 pero no lo es (el broker no arranca) y archivos .env con \\r al final de cada valor."""
+    pathlib.Path(path).write_text(text, encoding="utf-8", newline="\n")
+
+
 XML_HEAD = """<?xml version="1.0" encoding="UTF-8"?>
 <!-- Generado por scripts/gen_secrets.py. No versionar: contiene credenciales. -->
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -32,7 +39,7 @@ XML_HEAD = """<?xml version="1.0" encoding="UTF-8"?>
       <policyEntry queue="&gt;"><deadLetterStrategy><individualDeadLetterStrategy queuePrefix="DLQ." useQueueForQueueMessages="true"/></deadLetterStrategy></policyEntry>
     </policyEntries></policyMap></destinationPolicy>
     <persistenceAdapter><kahaDB directory="/opt/apache-activemq/data/kahadb"/></persistenceAdapter>
-    <!-- Límites modestos: por defecto el broker reserva hasta 50 GB de disco y no arranca bien en equipos con poco espacio -->
+    <!-- Limites modestos: por defecto el broker reserva hasta 50 GB de disco y no arranca bien en equipos con poco espacio -->
     <systemUsage><systemUsage>
       <memoryUsage><memoryUsage percentOfJvmHeap="70"/></memoryUsage>
       <storeUsage><storeUsage limit="1 gb"/></storeUsage>
@@ -47,7 +54,7 @@ def activemq_xml(store, refs, queues_path):
     """Un usuario del broker por servicio (clave = referencia mq-<servicio>) y permisos de lectura/escritura por cola.
     Sin consola web: no se importa jetty.xml."""
     from xml.sax.saxutils import quoteattr
-    queues = json.loads(pathlib.Path(queues_path).read_text())
+    queues = json.loads(pathlib.Path(queues_path).read_text(encoding="utf-8"))
     users = [r[3:] for r in refs if r.startswith("mq-")]
     for q, p in queues.items():
         for svc in p["read"] + p["write"]:
@@ -71,7 +78,7 @@ def generate(out=OUT, policy_path=POLICY, force=False):
     out = pathlib.Path(out)
     if (out / "manager" / "store.json").exists() and not force:
         raise SystemExit("Ya existen secretos. Usa --force para regenerarlos (invalida todo lo anterior).")
-    policy = json.loads(pathlib.Path(policy_path).read_text())
+    policy = json.loads(pathlib.Path(policy_path).read_text(encoding="utf-8"))
     refs = list(policy["refs"])
     services = sorted({s for c in policy["refs"].values() for s in c} | set(policy["rotators"]))
 
@@ -81,16 +88,16 @@ def generate(out=OUT, policy_path=POLICY, force=False):
 
     for d in ("manager", "env", "mongo-init"):
         (out / d).mkdir(parents=True, exist_ok=True)
-    (out / "manager" / "store.json").write_text(json.dumps(store, indent=2))
-    (out / "manager" / "service_key_hashes.json").write_text(json.dumps(hashes, indent=2))
-    (out / "service_keys.json").write_text(json.dumps(keys, indent=2))
-    (out / "mongo_root_password").write_text(secrets.token_urlsafe(32))
+    _write(out / "manager" / "store.json", json.dumps(store, indent=2))
+    _write(out / "manager" / "service_key_hashes.json", json.dumps(hashes, indent=2))
+    _write(out / "service_keys.json", json.dumps(keys, indent=2))
+    _write(out / "mongo_root_password", secrets.token_urlsafe(32))
     # Contraseñas de la demo para admin@alsahara.cl y cajero@alsahara.cl (las lee auth al sembrar; consúltalas en este archivo).
-    (out / "seed.env").write_text(f"SEED_ADMIN_PASSWORD={secrets.token_urlsafe(12)}\nSEED_CAJERO_PASSWORD={secrets.token_urlsafe(12)}\n")
+    _write(out / "seed.env", f"SEED_ADMIN_PASSWORD={secrets.token_urlsafe(12)}\nSEED_CAJERO_PASSWORD={secrets.token_urlsafe(12)}\n")
     for s, k in keys.items():
         # El proveedor de pagos simulado es una entidad externa: recibe su secreto de webhook por entorno, no del gestor.
         extra = f"WEBHOOK_SECRET={store['prov-webhook']['current']}\n" if s == "provider-sim" else ""
-        (out / "env" / f"{s}.env").write_text(f"SERVICE_ID={s}\nSERVICE_KEY={k}\nSECRETS_MANAGER_URL={MANAGER_URL}\n{extra}")
+        _write(out / "env" / f"{s}.env", f"SERVICE_ID={s}\nSERVICE_KEY={k}\nSECRETS_MANAGER_URL={MANAGER_URL}\n{extra}")
 
     # Un usuario de MongoDB por servicio, con permisos solo sobre su base (<servicio>_db).
     lines = ["// Generado por scripts/gen_secrets.py. No versionar."]
@@ -99,10 +106,10 @@ def generate(out=OUT, policy_path=POLICY, force=False):
             svc = ref[3:]
             lines.append(f'db.getSiblingDB("{svc}_db").createUser({{user: "{svc}", pwd: {json.dumps(store[ref]["current"])}, '
                          f'roles: [{{role: "readWrite", db: "{svc}_db"}}]}});')
-    (out / "mongo-init" / "init.js").write_text("\n".join(lines) + "\n")
+    _write(out / "mongo-init" / "init.js", "\n".join(lines) + "\n")
 
     (out / "activemq").mkdir(exist_ok=True)
-    (out / "activemq" / "activemq.xml").write_text(activemq_xml(store, refs, QUEUES))
+    _write(out / "activemq" / "activemq.xml", activemq_xml(store, refs, QUEUES))
 
     # Los archivos que un contenedor lee por bind-mount deben ser legibles por el usuario del contenedor (en Linux/macOS el uid
     # del contenedor no es el del anfitrión); el resto queda en 600. La carpeta secrets/ es local y no se versiona.
