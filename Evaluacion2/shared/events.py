@@ -78,7 +78,6 @@ class EventBus:
         cualquier excepción, nack → el broker lo manda a DLQ.<cola>. Devuelve la conexión (el llamador la mantiene viva)."""
         _validate(event_type, {k: None for k in EVENTS[event_type][1]})
         queue = EVENTS[event_type][0]
-        bus = self
 
         class Listener:
             def __init__(self): self.conn = None

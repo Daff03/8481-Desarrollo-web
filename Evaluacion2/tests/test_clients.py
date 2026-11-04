@@ -77,7 +77,7 @@ def test_validacion_de_run():
 
 def test_registro_crea_cuenta_perfil_direccion_y_pide_correo(ctx):
     c, db, auth, bus, _ = ctx
-    cid = registrar(c)
+    registrar(c)
     assert auth.users == {"ana@correo.cl": "user-1"}
     cl = db.clients.find_one({})
     assert cl["run"] == "12345678-5" and cl["user_id"] == "user-1" and cl["telefono"] == "+56912345678" and "password" not in str(cl)
@@ -213,12 +213,6 @@ def test_rutas_internas_solo_para_orders(ctx):
     assert c.get("/internal/clients/by-user/user-1").status_code == 401
     assert c.get("/internal/clients/by-user/nadie", headers=ORD).status_code == 404
     assert c.get("/clients/me", headers=ORD).status_code == 403   # orders no usa rutas públicas
-
-
-def test_vista_interna_incluye_el_usuario_para_orders(ctx):
-    c, *_ = ctx
-    registrar(c)
-    assert c.get("/internal/clients/by-user/user-1", headers=ORD).json()["userId"] == "user-1"
 
 
 def test_vista_interna_incluye_el_usuario_para_orders(ctx):

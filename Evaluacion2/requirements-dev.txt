@@ -1,8 +1,14 @@
--r secrets-manager/requirements.txt
+# Todo lo necesario para correr las pruebas (pytest tests). Mismas versiones que usan los contenedores.
 -r auth/requirements.txt
 -r gateway/requirements.txt
+-r secrets-manager/requirements.txt
+-r svc-clients/requirements.txt
+-r svc-inventory/requirements.txt
 -r svc-orders/requirements.txt
 -r svc-payments/requirements.txt
+-r svc-notifier/requirements.txt
+-r provider-sim/requirements.txt
 -r graphql-gateway/requirements.txt
-pytest
-mongomock
+pytest==9.2.0
+mongomock==4.3.0
+PyYAML==6.0.3

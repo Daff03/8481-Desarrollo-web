@@ -27,7 +27,7 @@ secrets:
 
 services:
   mongo:
-    image: mongo:7
+    image: mongo:7.0.45
     restart: unless-stopped
     networks: [private]            # sin puertos publicados
     environment:
@@ -44,7 +44,7 @@ services:
       retries: 10
 
   activemq:
-    image: apache/activemq-classic:6.1.2   # versión fijada; verificar que exista al hacer el primer pull
+    image: apache/activemq-classic:6.1.8
     restart: unless-stopped
     networks: [private]            # sin puertos publicados; sin consola web
     volumes:
@@ -229,6 +229,8 @@ services:
     environment:
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:8080}
       COOKIE_SECURE: ${COOKIE_SECURE:-false}   # true cuando haya TLS
+      RATE_LIMIT_PER_MIN: ${RATE_LIMIT_PER_MIN:-300}       # por IP; en Docker Desktop todos los navegadores locales comparten la misma IP
+      LOGIN_RATE_PER_MIN: ${LOGIN_RATE_PER_MIN:-10}
     networks: [public, private]
     ports:
       - "8000:8000"                            # único puerto publicado de todo el sistema

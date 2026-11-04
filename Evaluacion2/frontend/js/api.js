@@ -21,7 +21,12 @@ async function api(path, opts) {
   }
   var data = null;
   try { data = await res.json(); } catch (e) {}
-  if (!res.ok) throw { status: res.status, message: ERRORES[res.status] || 'Hubo un problema. Intenta nuevamente.' };
+  if (!res.ok) {
+    var msg = ERRORES[res.status] || 'Hubo un problema. Intenta nuevamente.';
+    // 422 por regla del negocio (fuera de zona, sin stock…): el backend manda un texto seguro en "detail"; si es validación, "detail" es una lista y se usa el genérico
+    if (res.status === 422 && data && typeof data.detail === 'string') msg = data.detail;
+    throw { status: res.status, message: msg };
+  }
   return data;
 }
 

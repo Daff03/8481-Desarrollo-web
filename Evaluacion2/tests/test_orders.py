@@ -357,7 +357,8 @@ def test_personal_gestiona_reservas(ctx):
 # ------------------------------------------------------------------ reporte (RF9)
 def test_reporte_cuenta_solo_ventas_pagadas_y_es_de_administrador(ctx):
     c, db, _, _, _, mod = ctx
-    a, b, anulado, sinpagar = crear(c), crear(c, items=[{"slug": "baklava", "cantidad": 3}]), crear(c), crear(c)
+    a, b, anulado = crear(c), crear(c, items=[{"slug": "baklava", "cantidad": 3}]), crear(c)
+    crear(c)  # un pedido sin pagar: no debe contar como venta
     for o in (a, b, anulado):
         pagar(mod, db, o)
     c.post(f"/orders/{anulado['id']}/cancel", headers=as_("cajero", "s"), json={"motivo": "Error de cocina"})

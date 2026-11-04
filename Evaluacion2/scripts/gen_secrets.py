@@ -6,7 +6,10 @@ secrets/
   env/<servicio>.env  SERVICE_ID, SERVICE_KEY y URL del gestor para cada servicio
   mongo-init/init.js  crea un usuario de MongoDB por servicio (usa las mismas claves db-* del gestor)
   mongo_root_password contraseña root de MongoDB (secreto de Docker, solo la lee el contenedor mongo)
-  service_keys.json   claves en claro de cada servicio, solo para pruebas y admin-cli"""
+  activemq/           activemq.xml con los usuarios y permisos del broker
+  seed.env            contraseñas de admin@alsahara.cl y cajero@alsahara.cl
+  service_keys.json   claves en claro de cada servicio, solo para pruebas y admin-cli
+Los archivos montados dentro de contenedores (manager/, mongo-init/, activemq/, mongo_root_password) quedan en 644 y el resto en 600."""
 import hashlib, json, os, pathlib, secrets, sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -23,12 +26,18 @@ XML_HEAD = """<?xml version="1.0" encoding="UTF-8"?>
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
-  <broker xmlns="http://activemq.apache.org/schema/core" brokerName="alsahara" dataDirectory="${activemq.data}" useJmx="false" persistent="true">
+  <broker xmlns="http://activemq.apache.org/schema/core" brokerName="alsahara" dataDirectory="/opt/apache-activemq/data" useJmx="false" persistent="true">
     <destinationPolicy><policyMap><policyEntries>
       <!-- Un DLQ por cola: los mensajes rechazados (nack) quedan en DLQ.<cola> para revisarlos -->
       <policyEntry queue="&gt;"><deadLetterStrategy><individualDeadLetterStrategy queuePrefix="DLQ." useQueueForQueueMessages="true"/></deadLetterStrategy></policyEntry>
     </policyEntries></policyMap></destinationPolicy>
-    <persistenceAdapter><kahaDB directory="${activemq.data}/kahadb"/></persistenceAdapter>
+    <persistenceAdapter><kahaDB directory="/opt/apache-activemq/data/kahadb"/></persistenceAdapter>
+    <!-- Límites modestos: por defecto el broker reserva hasta 50 GB de disco y no arranca bien en equipos con poco espacio -->
+    <systemUsage><systemUsage>
+      <memoryUsage><memoryUsage percentOfJvmHeap="70"/></memoryUsage>
+      <storeUsage><storeUsage limit="1 gb"/></storeUsage>
+      <tempUsage><tempUsage limit="512 mb"/></tempUsage>
+    </systemUsage></systemUsage>
     <plugins>
       <simpleAuthenticationPlugin anonymousAccessAllowed="false"><users>
 """
@@ -95,13 +104,24 @@ def generate(out=OUT, policy_path=POLICY, force=False):
     (out / "activemq").mkdir(exist_ok=True)
     (out / "activemq" / "activemq.xml").write_text(activemq_xml(store, refs, QUEUES))
 
+    # Los archivos que un contenedor lee por bind-mount deben ser legibles por el usuario del contenedor (en Linux/macOS el uid
+    # del contenedor no es el del anfitrión); el resto queda en 600. La carpeta secrets/ es local y no se versiona.
     for f in out.rglob("*"):
         if f.is_file():
-            try: os.chmod(f, 0o644 if f.parent.name == "mongo-init" else 0o600)  # el contenedor mongo debe poder leer init.js
+            shared = f.parent.name in BIND_MOUNTED or f.name == "mongo_root_password"
+            try: os.chmod(f, 0o644 if shared else 0o600)
             except OSError: pass
     return refs, services
 
 
+BIND_MOUNTED = {"manager", "mongo-init", "activemq"}
+
+
 if __name__ == "__main__":
     refs, services = generate(force="--force" in sys.argv)
+    mail = ROOT / "mail-outbox"   # donde el notifier deja los correos de prueba; se crea aquí para que no lo cree Docker como root
+    mail.mkdir(exist_ok=True)
+    try: os.chmod(mail, 0o777)
+    except OSError: pass
     print(f"Generadas {len(refs)} referencias y {len(services)} credenciales de servicio en {OUT}")
+    print("Contraseñas de admin@alsahara.cl y cajero@alsahara.cl: ver secrets/seed.env")

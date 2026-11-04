@@ -17,7 +17,9 @@
       await api('/auth/login', { method: 'POST', body: JSON.stringify({ email: email.value.trim(), password: pass.value }) });
       location.href = permitidos.indexOf(destino) !== -1 ? destino : 'index.php';
     } catch (err) {
-      showAlert('alerta', err.status === 401 ? 'Correo o contraseña incorrectos.' : err.message, false);
+      var texto = err.status === 401 ? 'Correo o contraseña incorrectos.'
+        : err.status === 403 ? 'Debes confirmar tu correo antes de iniciar sesión. Revisa el enlace que te enviamos.' : err.message;
+      showAlert('alerta', texto, false);
     } finally { btn.disabled = false; }
   });
 })();

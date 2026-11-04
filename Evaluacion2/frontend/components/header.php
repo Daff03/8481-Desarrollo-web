@@ -57,17 +57,18 @@
   window.addEventListener('cart:changed', actualizarCarrito);
   window.addEventListener('storage', actualizarCarrito);
 
-  // Sesión: el navegador no puede leer la cookie HttpOnly, así que pregunta al backend (S07)
+  // Sesión: el navegador no puede leer la cookie HttpOnly, así que pregunta al gateway (GET /auth/session, sirve para cualquier rol)
   window.addEventListener('DOMContentLoaded', async function(){
     if (typeof api !== 'function') return;
     var ingresar = document.getElementById('btnIngresar');
     var box = document.getElementById('sesionBox');
     try {
-      await api('/clients/me');
+      var s = await api('/auth/session');
+      if (!s || !s.authenticated) return;
       ingresar.classList.add('d-none');
       box.classList.remove('d-none');
       box.classList.add('d-flex');
-    } catch (e) { /* sin sesión o sin conexión: se mantiene "Ingresar" */ }
+    } catch (e) { /* sin conexión: se mantiene "Ingresar" */ }
   });
 
   var salir = document.getElementById('btnSalir');

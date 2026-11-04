@@ -20,31 +20,38 @@ Entrega: 9-nov-2026.
 | `graphql-gateway/` | Agregaciones `resumenPedido`/`misPedidos` (orders + inventory + payments), `anularPedido`; autorización por campo, límites de profundidad y costo, batching (8700, privado) | listo |
 
 ## Pruebas
+Requieren **Python 3.12** (la versión de las imágenes) y no necesitan Docker ni MongoDB: los servicios vecinos, ActiveMQ y Mongo se simulan (`mongomock`).
 ```
-python -m venv <ruta-fuera-del-repo> && <venv>/Scripts/pip install -r requirements-dev.txt
-<venv>/Scripts/python -m pytest tests
+python -m venv C:\dev\alsahara-venv                       # fuera del repositorio
+C:\dev\alsahara-venv\Scripts\pip install -r requirements-dev.txt
+C:\dev\alsahara-venv\Scripts\python -m pytest tests     # 176 pruebas
 ```
-No necesitan MongoDB: `auth` se prueba con `mongomock` y el gateway con servicios simulados.
+`tests/test_consistencia.py` vigila que versiones, puertos, referencias de secretos, compose, Dockerfiles y llamadas del frontend sigan cuadrando.
 
-## Secretos
-`python scripts/gen_secrets.py` crea `secrets/` (ignorada por git) con los secretos, las credenciales de cada servicio
-y un `.env` por servicio. Las referencias permitidas por servicio están en `secrets-manager/policy.json`.
-`.env.example` solo contiene referencias simbólicas.
-
-## Arranque (Docker)
+## Levantar el sistema con Docker
+**Guía completa paso a paso (equipo nuevo, con todas las instalaciones): [docs/GUIA_LEVANTAR_DOCKER.md](docs/GUIA_LEVANTAR_DOCKER.md).** Resumen:
 ```
-python scripts/gen_secrets.py            # una vez; con --force se regeneran y hay que borrar el volumen: docker compose down -v
-docker compose up -d --build
-docker compose ps                        # todos "healthy"; solo el gateway publica el puerto 8000
-docker compose down                      # detener
+copy .env.example .env                    # y ajusta FRONTEND_URL a la URL real de tu frontend
+python scripts/gen_secrets.py             # una vez (o con Docker, ver la guía); crea ./secrets (ignorada por git)
+docker compose up -d --build              # primera vez: 5 a 15 minutos
+docker compose ps                         # los 12 servicios en "healthy"
+docker compose down                       # detener (docker compose down -v borra los datos)
 ```
-Redes: `public` (solo el gateway) y `private` (`internal: true`, sin salida a Internet; Mongo, secrets-manager y
-servicios no publican puertos). MongoDB crea un usuario por servicio con permisos solo sobre su base (`<servicio>_db`).
-Los contenedores corren con sistema de archivos de solo lectura, sin capacidades y sin privilegios nuevos.
-En Linux, los archivos de `secrets/` (permisos 600) deben ser legibles por el usuario del contenedor.
+- Solo se publican dos puertos: el gateway (`8000`) y el proveedor de pagos simulado (`9000`). Todo lo demás vive en la red `private` (`internal: true`, sin salida a Internet).
+- `gen_secrets.py` crea los secretos, las credenciales de cada servicio, el usuario de Mongo y de ActiveMQ de cada servicio y las contraseñas de las cuentas de la demo. Si lo regeneras con `--force`, borra antes los datos (`docker compose down -v`).
+- Cuentas de personal: `admin@alsahara.cl` y `cajero@alsahara.cl`; sus contraseñas están en `secrets/seed.env` (no están en el repositorio). Los clientes se registran desde `registro.php`; el enlace de verificación llega a `mail-outbox/outbox.jsonl`.
+- Los contenedores corren con sistema de archivos de solo lectura, sin capacidades y sin privilegios nuevos. MongoDB crea un usuario por servicio con permisos solo sobre su base (`<servicio>_db`).
+- Las referencias de secretos permitidas por servicio están en `secrets-manager/policy.json`; `.env.example` no contiene secretos.
 
-Cuentas de personal de la demo: `admin@alsahara.cl` y `cajero@alsahara.cl`; sus contraseñas se generan en `secrets/seed.env`
-(no están en el repositorio). Los clientes se registran desde `registro.php`.
+## Versiones verificadas
+| Pieza | Versión |
+|---|---|
+| Python (pruebas e imágenes) | 3.12.16 (`python:3.12.16-slim`) |
+| Paquetes | fijados en cada `requirements.txt` (fastapi 0.162.0, pydantic 2.14.2, pymongo 4.19.0, PyJWT 2.15.1, argon2-cffi 25.1.0, stomp.py 9.0.0, graphql-core 3.3.1…) |
+| MongoDB | `mongo:7.0.45` |
+| ActiveMQ Classic | `apache/activemq-classic:6.1.8` |
+| Docker Desktop / Engine / Compose | 4.98.0 / 29.9.2 / v5.6.1 |
+| XAMPP (frontend) | PHP 8.2.x (probado 8.2.12) |
 
 ## Flujo de compra (verificable con las pruebas)
 1. `pedido.php` → `POST /orders` (solo slugs y cantidades): `orders` reserva stock en `inventory` y calcula precios; estado CREADO.
