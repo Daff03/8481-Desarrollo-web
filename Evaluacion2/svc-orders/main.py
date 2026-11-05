@@ -598,13 +598,14 @@ def reserva_dto(r: dict) -> dict:
 
 
 @app.post("/reservations", status_code=201)
-def create_reservation(body: ReservaIn, p=Depends(guard()), db=Depends(get_db)):
+def create_reservation(body: ReservaIn, p=Depends(guard()), db=Depends(get_db), bus=Depends(get_bus)):
     dt = parse_reserva_fecha(body.fechaHora)
     doc = {"estado": "PENDIENTE", "nombre": body.nombre, "email": body.email, "personas": body.personas, "fecha_hora_dt": dt,
            "mensaje": body.mensaje, "user_id": p.user_id, "creado_en": now()}
     doc["_id"] = db.reservations_mesa.insert_one(doc).inserted_id
     queue_mail(db, f"reserva-{doc['_id']}-PENDIENTE", body.email, "reserva",
                {"estado": "PENDIENTE", "nombre": body.nombre, "personas": body.personas, "fechaHora": dt.isoformat(timespec="minutes")})
+    flush_outbox(db, bus)  # mejor esfuerzo; si el broker cae, el loop de mantenimiento reintenta
     audit("reservation_created", reservation=str(doc["_id"]))
     return {"id": str(doc["_id"]), "estado": "PENDIENTE"}
 
@@ -622,7 +623,7 @@ def list_reservations(estado: str | None = Query(default=None, max_length=12), p
 
 
 @app.patch("/reservations/{rid}")
-def set_reservation(rid: str, body: ReservaStatusIn, _=Depends(guard(roles=STAFF)), db=Depends(get_db)):
+def set_reservation(rid: str, body: ReservaStatusIn, _=Depends(guard(roles=STAFF)), db=Depends(get_db), bus=Depends(get_bus)):
     origin = ["PENDIENTE"] if body.estado in ("CONFIRMADA", "RECHAZADA") else ["PENDIENTE", "CONFIRMADA"]
     r = db.reservations_mesa.find_one_and_update({"_id": oid(rid), "estado": {"$in": origin}}, {"$set": {"estado": body.estado}},
                                                  return_document=ReturnDocument.AFTER)
@@ -632,6 +633,7 @@ def set_reservation(rid: str, body: ReservaStatusIn, _=Depends(guard(roles=STAFF
         raise conflict()
     queue_mail(db, f"reserva-{rid}-{body.estado}", r["email"], "reserva",
                {"estado": body.estado, "nombre": r["nombre"], "personas": r["personas"], "fechaHora": r["fecha_hora_dt"].isoformat(timespec="minutes")})
+    flush_outbox(db, bus)  # mejor esfuerzo; si el broker cae, el loop de mantenimiento reintenta
     return reserva_dto(r)
 
 
