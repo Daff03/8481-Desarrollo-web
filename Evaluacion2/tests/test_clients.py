@@ -8,17 +8,17 @@ sys.path.insert(0, str(ROOT))
 from shared import internal_jwt
 from shared.events import EventBusUnavailable
 
-GW = {"X-Caller": "gateway", "X-Caller-Key": "valor-gw-clients"}
-ORD = {"X-Caller": "orders", "X-Caller-Key": "valor-orders-clients"}
+GW = {"X-Caller": "gateway", "X-Caller-Key": "valor-gw-clients-de-prueba-32-bytes"}
+ORD = {"X-Caller": "orders", "X-Caller-Key": "valor-orders-clients-de-prueba-32-bytes"}
 RUN_OK = "12.345.678-5"
 
 
 def as_(role, uid="u1"):
-    return GW | {"X-Internal-Identity": internal_jwt.sign("valor-internal-jwt", uid, role, "clients", "cid")}
+    return GW | {"X-Internal-Identity": internal_jwt.sign("valor-internal-jwt-de-prueba-32-bytes", uid, role, "clients", "cid")}
 
 
 class FakeProvider:
-    def get(self, ref): return {"current": f"valor-{ref}", "previous": None}
+    def get(self, ref): return {"current": f"valor-{ref}-de-prueba-32-bytes", "previous": None}
 
 
 class FakeBus:

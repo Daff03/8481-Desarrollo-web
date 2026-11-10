@@ -11,7 +11,7 @@ PW = "Clave1234"
 
 class FakeProvider:
     def __init__(self): self.prev = {}
-    def get(self, ref): return {"current": f"valor-{ref}", "previous": self.prev.get(ref)}
+    def get(self, ref): return {"current": f"valor-{ref}-de-prueba-32-bytes", "previous": self.prev.get(ref)}
 
 
 def load_auth():
@@ -32,8 +32,8 @@ def ctx():
         yield c, db, prov, mod
 
 
-GW = {"X-Caller": "gateway", "X-Caller-Key": "valor-gw-auth"}
-CL = {"X-Caller": "clients", "X-Caller-Key": "valor-auth-clients"}
+GW = {"X-Caller": "gateway", "X-Caller-Key": "valor-gw-auth-de-prueba-32-bytes"}
+CL = {"X-Caller": "clients", "X-Caller-Key": "valor-auth-clients-de-prueba-32-bytes"}
 
 
 def registrar(c, email="ana@correo.cl", verificar=True):
@@ -155,7 +155,7 @@ def test_clients_puede_borrar_usuario_y_sus_sesiones(ctx):
 def test_listado_de_usuarios_solo_administrador_sin_hashes(ctx):
     c, _, _, mod = ctx
     registrar(c)
-    ident = lambda role: GW | {"X-Internal-Identity": internal_jwt.sign("valor-internal-jwt", "u", role, "auth", "cid")}
+    ident = lambda role: GW | {"X-Internal-Identity": internal_jwt.sign("valor-internal-jwt-de-prueba-32-bytes", "u", role, "auth", "cid")}
     assert c.get("/users", headers=GW).status_code == 401
     assert c.get("/users", headers=ident("cliente")).status_code == 403
     r = c.get("/users", headers=ident("administrador"))

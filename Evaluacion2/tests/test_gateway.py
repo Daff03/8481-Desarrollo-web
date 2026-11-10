@@ -15,7 +15,7 @@ class FakeProvider:
     def __init__(self): self.down = False
     def get(self, ref):
         if self.down: raise RuntimeError("gestor caído")
-        return {"current": f"valor-{ref}", "previous": None}
+        return {"current": f"valor-{ref}-de-prueba-32-bytes", "previous": None}
 
 
 class Upstream:
@@ -93,20 +93,20 @@ def test_4_identidad_que_llega_al_servicio_es_la_verificada(ctx):
     assert c.get("/api/v1/orders/abc123", headers=falsas | ck("tok-ana")).status_code == 200
     h = up.to("svc-orders")[0][3]
     assert "x-user-id" not in h and "x-role" not in h and "authorization" not in h and "cookie" not in h
-    claims = internal_jwt.verify(h["x-internal-identity"], ["valor-internal-jwt"], "orders")
+    claims = internal_jwt.verify(h["x-internal-identity"], ["valor-internal-jwt-de-prueba-32-bytes"], "orders")
     assert claims["sub"] == "u-ana" and claims["role"] == "cliente" and claims["exp"] - claims["iat"] <= 30
     with pytest.raises(internal_jwt.InvalidIdentity):  # un token para orders no sirve en payments
-        internal_jwt.verify(h["x-internal-identity"], ["valor-internal-jwt"], "payments")
+        internal_jwt.verify(h["x-internal-identity"], ["valor-internal-jwt-de-prueba-32-bytes"], "payments")
 
 
 def test_5_acceso_directo_sin_identidad_rechazado_por_el_token(ctx):
     # Lo que un servicio exigiría si alguien lo llamara sin pasar por el gateway: firma válida y destino correcto.
-    token = internal_jwt.sign("otra-clave", "u-x", "administrador", "orders", "cid")
+    token = internal_jwt.sign("otra-clave-distinta-de-prueba-32-bytes", "u-x", "administrador", "orders", "cid")
     with pytest.raises(internal_jwt.InvalidIdentity):
-        internal_jwt.verify(token, ["valor-internal-jwt"], "orders")
-    vencido = internal_jwt.sign("valor-internal-jwt", "u-x", "cliente", "orders", "cid", ttl=-5)
+        internal_jwt.verify(token, ["valor-internal-jwt-de-prueba-32-bytes"], "orders")
+    vencido = internal_jwt.sign("valor-internal-jwt-de-prueba-32-bytes", "u-x", "cliente", "orders", "cid", ttl=-5)
     with pytest.raises(internal_jwt.InvalidIdentity):
-        internal_jwt.verify(vencido, ["valor-internal-jwt"], "orders")
+        internal_jwt.verify(vencido, ["valor-internal-jwt-de-prueba-32-bytes"], "orders")
 
 
 def test_6_pago_alterado_no_cambia_el_estado_desde_el_gateway(ctx):
@@ -215,7 +215,7 @@ def test_cuerpo_grande_o_no_json_rechazado(ctx):
 
 
 def test_jwt_interno_acepta_emisor_graphql_y_rechaza_otros():
-    ok = internal_jwt.sign("k", "u1", "cliente", "orders", "cid", issuer="graphql-gateway")
-    assert internal_jwt.verify(ok, ["k"], "orders")["sub"] == "u1"
+    ok = internal_jwt.sign("clave-de-prueba-de-32-bytes-minimo", "u1", "cliente", "orders", "cid", issuer="graphql-gateway")
+    assert internal_jwt.verify(ok, ["clave-de-prueba-de-32-bytes-minimo"], "orders")["sub"] == "u1"
     with pytest.raises(internal_jwt.InvalidIdentity):
-        internal_jwt.verify(internal_jwt.sign("k", "u1", "cliente", "orders", "cid", issuer="otro-servicio"), ["k"], "orders")
+        internal_jwt.verify(internal_jwt.sign("clave-de-prueba-de-32-bytes-minimo", "u1", "cliente", "orders", "cid", issuer="otro-servicio"), ["clave-de-prueba-de-32-bytes-minimo"], "orders")

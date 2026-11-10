@@ -9,7 +9,7 @@ from shared.events import EventBus, EventBusUnavailable, InvalidEvent
 
 
 class FakeProvider:
-    def get(self, ref): return {"current": f"valor-{ref}", "previous": None}
+    def get(self, ref): return {"current": f"valor-{ref}-de-prueba-32-bytes", "previous": None}
 
 
 class FakeConn:
@@ -51,7 +51,7 @@ def test_publica_persistente_con_credencial_propia(bus):
     dest, body, headers = b.sent[0]
     assert dest == "/queue/pagos.aprobados" and headers["persistent"] == "true" and headers["event-id"] == eid
     assert json.loads(body)["payload"] == PAGO
-    assert b.logins == [("payments", "valor-mq-payments")]
+    assert b.logins == [("payments", "valor-mq-payments-de-prueba-32-bytes")]
     assert not b.conns[0].connected  # cierra la conexión
 
 

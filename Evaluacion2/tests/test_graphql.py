@@ -9,7 +9,7 @@ from shared import internal_jwt
 
 A, B = "a" * 24, "b" * 24          # pedidos de user-1
 OTRO = "c" * 24                     # pedido de user-2
-KEYS = {"svc-orders": "valor-gql-orders", "svc-inventory": "valor-gql-inventory", "svc-payments": "valor-gql-payments"}
+KEYS = {"svc-orders": "valor-gql-orders-de-prueba-32-bytes", "svc-inventory": "valor-gql-inventory-de-prueba-32-bytes", "svc-payments": "valor-gql-payments-de-prueba-32-bytes"}
 AUD = {"svc-orders": "orders", "svc-inventory": "inventory", "svc-payments": "payments"}
 CATALOGO = {"kebab-mixto": {"id": "p1", "slug": "kebab-mixto", "nombre": "Kebab Mixto", "categoria": "carnes", "descripcion": "Brochetas",
                             "imagen": "assets/img/platos/kebab-mixto.jpg", "precio": 13990, "disponible": True},
@@ -27,7 +27,7 @@ def pedido(oid, owner, estado="PAGADO", slugs=("kebab-mixto", "baklava")):
 
 
 class FakeProvider:
-    def get(self, ref): return {"current": f"valor-{ref}", "previous": None}
+    def get(self, ref): return {"current": f"valor-{ref}-de-prueba-32-bytes", "previous": None}
 
 
 class Upstream:
@@ -40,7 +40,7 @@ class Upstream:
         h = req.headers
         host = req.url.host
         assert h["x-caller"] == "graphql-gateway" and h["x-caller-key"] == KEYS[host], "credencial de tramo incorrecta"
-        claims = internal_jwt.verify(h["x-internal-identity"], ["valor-internal-jwt"], AUD[host])
+        claims = internal_jwt.verify(h["x-internal-identity"], ["valor-internal-jwt-de-prueba-32-bytes"], AUD[host])
         assert jwt_issuer(h["x-internal-identity"]) == "graphql-gateway"
         return claims["sub"], claims["role"]
 
@@ -99,9 +99,9 @@ def ctx():
     return make()
 
 
-def gw(role="cliente", uid="user-1", aud="graphql-gateway", key="valor-gw-graphql"):
+def gw(role="cliente", uid="user-1", aud="graphql-gateway", key="valor-gw-graphql-de-prueba-32-bytes"):
     return {"X-Caller": "gateway", "X-Caller-Key": key,
-            "X-Internal-Identity": internal_jwt.sign("valor-internal-jwt", uid, role, aud, "cid")}
+            "X-Internal-Identity": internal_jwt.sign("valor-internal-jwt-de-prueba-32-bytes", uid, role, aud, "cid")}
 
 
 def gql(c, query, variables=None, headers=None, **kw):
@@ -268,9 +268,9 @@ def test_solo_el_api_gateway_con_identidad_valida(ctx):
     q = {"query": "{ __typename }"}
     assert c.post("/graphql", json=q).status_code == 401
     assert c.post("/graphql", json=q, headers={"X-Caller": "gateway", "X-Caller-Key": "mala"}).status_code == 401
-    assert c.post("/graphql", json=q, headers={"X-Caller": "gateway", "X-Caller-Key": "valor-gw-graphql"}).status_code == 401         # sin identidad
+    assert c.post("/graphql", json=q, headers={"X-Caller": "gateway", "X-Caller-Key": "valor-gw-graphql-de-prueba-32-bytes"}).status_code == 401         # sin identidad
     assert c.post("/graphql", json=q, headers=gw(aud="orders")).status_code == 401                                                    # token de otro destino
-    assert c.post("/graphql", json=q, headers={"X-Caller": "orders", "X-Caller-Key": "valor-gql-orders"}).status_code == 401          # llamador desconocido
+    assert c.post("/graphql", json=q, headers={"X-Caller": "orders", "X-Caller-Key": "valor-gql-orders-de-prueba-32-bytes"}).status_code == 401          # llamador desconocido
     assert c.post("/graphql", json=q, headers=gw(role="intruso")).status_code == 403
     assert c.get("/docs").status_code == 404 and c.get("/graphql").status_code == 405
     assert up.calls == []

@@ -16,15 +16,15 @@ def load(name, path):
 
 class FakeProvider:
     def __init__(self): self.prev = {}
-    def get(self, ref): return {"current": f"valor-{ref}", "previous": self.prev.get(ref)}
+    def get(self, ref): return {"current": f"valor-{ref}-de-prueba-32-bytes", "previous": self.prev.get(ref)}
 
 
-GW = {"X-Caller": "gateway", "X-Caller-Key": "valor-gw-inventory"}
-ORD = {"X-Caller": "orders", "X-Caller-Key": "valor-orders-inventory"}
+GW = {"X-Caller": "gateway", "X-Caller-Key": "valor-gw-inventory-de-prueba-32-bytes"}
+ORD = {"X-Caller": "orders", "X-Caller-Key": "valor-orders-inventory-de-prueba-32-bytes"}
 
 
 def as_(role, aud="inventory", uid="u1"):
-    return GW | {"X-Internal-Identity": internal_jwt.sign("valor-internal-jwt", uid, role, aud, "cid")}
+    return GW | {"X-Internal-Identity": internal_jwt.sign("valor-internal-jwt-de-prueba-32-bytes", uid, role, aud, "cid")}
 
 
 @pytest.fixture()
@@ -228,7 +228,7 @@ def test_barrido_no_toca_reservas_recientes(ctx):
     assert inv.sweep_stale(db) == 0 and db.products.find_one({"slug": "baklava"})["stock"] == 46
 
 
-GQL = {"X-Caller": "graphql-gateway", "X-Caller-Key": "valor-gql-inventory"}
+GQL = {"X-Caller": "graphql-gateway", "X-Caller-Key": "valor-gql-inventory-de-prueba-32-bytes"}
 
 
 def test_consulta_por_lote_de_slugs(ctx):
@@ -248,4 +248,4 @@ def test_graphql_gateway_solo_lee_el_catalogo_publico(ctx):
     nuevo = {"slug": "te-menta", "nombre": "Té de menta", "categoria": "postres", "precio": 2500}
     assert c.post("/products", headers=GQL | {"X-Internal-Identity": as_("administrador")["X-Internal-Identity"]}, json=nuevo).status_code == 403
     assert c.post("/internal/reserve", headers=GQL, json={"orderId": "o1", "items": []}).status_code == 403
-    assert c.get("/products", headers=GQL | {"X-Caller-Key": "valor-gw-inventory"}).status_code == 401   # la clave del gateway no sirve en el tramo GraphQL
+    assert c.get("/products", headers=GQL | {"X-Caller-Key": "valor-gw-inventory-de-prueba-32-bytes"}).status_code == 401   # la clave del gateway no sirve en el tramo GraphQL

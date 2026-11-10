@@ -83,6 +83,9 @@ class EventBus:
             def __init__(self): self.conn = None
             def on_error(self, frame): log.error(json.dumps({"event": "broker_error"}))
             def on_disconnected(self): log.warning(json.dumps({"event": "disconnected"}))
+            # stomp.py la invoca sin comprobar que exista (ya cerró la conexión; el servicio reconecta solo).
+            # Sin ella, cada latido perdido deja un AttributeError en los logs.
+            def on_heartbeat_timeout(self): log.warning(json.dumps({"event": "heartbeat_timeout"}))
             def on_message(self, frame):
                 ack_id = frame.headers.get("ack") or frame.headers.get("ack-id") or frame.headers.get("message-id")
                 try:

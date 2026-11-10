@@ -10,8 +10,8 @@ sys.path.insert(0, str(ROOT))
 from shared import internal_jwt, signing
 from shared.events import EventBusUnavailable
 
-GW = {"X-Caller": "gateway", "X-Caller-Key": "valor-gw-payments"}
-SECRET = "valor-prov-webhook"
+GW = {"X-Caller": "gateway", "X-Caller-Key": "valor-gw-payments-de-prueba-32-bytes"}
+SECRET = "valor-prov-webhook-de-prueba-32-bytes"
 OID = "b" * 24
 
 
@@ -22,12 +22,12 @@ def load(name, rel):
 
 
 def as_(role, uid="user-1"):
-    return GW | {"X-Internal-Identity": internal_jwt.sign("valor-internal-jwt", uid, role, "payments", "cid")}
+    return GW | {"X-Internal-Identity": internal_jwt.sign("valor-internal-jwt-de-prueba-32-bytes", uid, role, "payments", "cid")}
 
 
 class FakeProvider:
     def __init__(self): self.prev = {}
-    def get(self, ref): return {"current": f"valor-{ref}", "previous": self.prev.get(ref)}
+    def get(self, ref): return {"current": f"valor-{ref}-de-prueba-32-bytes", "previous": self.prev.get(ref)}
 
 
 class FakeBus:
@@ -243,7 +243,7 @@ def test_proveedor_simulado_rechaza_enlaces_manipulados(ctx):
     assert s.get("/docs").status_code == 404
 
 
-GQL = {"X-Caller": "graphql-gateway", "X-Caller-Key": "valor-gql-payments"}
+GQL = {"X-Caller": "graphql-gateway", "X-Caller-Key": "valor-gql-payments-de-prueba-32-bytes"}
 
 
 def pago(db, order, user, estado="APROBADO", segundos=0):

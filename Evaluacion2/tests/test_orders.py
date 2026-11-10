@@ -10,18 +10,18 @@ sys.path.insert(0, str(ROOT))
 from shared import internal_jwt
 from shared.events import EventBusUnavailable
 
-GW = {"X-Caller": "gateway", "X-Caller-Key": "valor-gw-orders"}
-PAY = {"X-Caller": "payments", "X-Caller-Key": "valor-orders-payments"}
+GW = {"X-Caller": "gateway", "X-Caller-Key": "valor-gw-orders-de-prueba-32-bytes"}
+PAY = {"X-Caller": "payments", "X-Caller-Key": "valor-orders-payments-de-prueba-32-bytes"}
 CID = "a" * 24
 PRECIOS = {"kebab-mixto": ("Kebab Mixto", 13990), "baklava": ("Baklava", 4990), "falafel-casero": ("Falafel Casero", 8990)}
 
 
 def as_(role, uid="user-1"):
-    return GW | {"X-Internal-Identity": internal_jwt.sign("valor-internal-jwt", uid, role, "orders", "cid")}
+    return GW | {"X-Internal-Identity": internal_jwt.sign("valor-internal-jwt-de-prueba-32-bytes", uid, role, "orders", "cid")}
 
 
 class FakeProvider:
-    def get(self, ref): return {"current": f"valor-{ref}", "previous": None}
+    def get(self, ref): return {"current": f"valor-{ref}-de-prueba-32-bytes", "previous": None}
 
 
 class FakeInventory:
@@ -374,11 +374,11 @@ def test_reporte_cuenta_solo_ventas_pagadas_y_es_de_administrador(ctx):
     assert c.get("/reports/sales?desde=2020-01-01&hasta=2026-01-01", headers=adm).status_code == 400
 
 
-GQL = {"X-Caller": "graphql-gateway", "X-Caller-Key": "valor-gql-orders"}
+GQL = {"X-Caller": "graphql-gateway", "X-Caller-Key": "valor-gql-orders-de-prueba-32-bytes"}
 
 
 def as_gql(role, uid="user-1"):
-    return GQL | {"X-Internal-Identity": internal_jwt.sign("valor-internal-jwt", uid, role, "orders", "cid", issuer="graphql-gateway")}
+    return GQL | {"X-Internal-Identity": internal_jwt.sign("valor-internal-jwt-de-prueba-32-bytes", uid, role, "orders", "cid", issuer="graphql-gateway")}
 
 
 def test_graphql_gateway_lee_pedidos_con_la_propiedad_comprobada_por_orders(ctx):
